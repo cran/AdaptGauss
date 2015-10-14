@@ -55,7 +55,7 @@ if(!missing(ListOfAdaptGauss)){
 # getOptGauss
 #########################################################################
 `getOptGauss` <- function(Data, Kernels, ParetoDensity,fast){ 
-  # Teste RMS f?r einen Gauss
+  # Teste RMS fuer einen Gauss
   Mean1 <- mean(Data)
   Deviation1 <- sd(Data)
   Weight1 <- 1
@@ -66,7 +66,7 @@ if(!missing(ListOfAdaptGauss)){
   Fi <- dnorm(Kernels,Mean1,Deviation1)*Weight1
   RMS1 <- sqrt(sum((Fi-ParetoDensity)^2))
   
-  # Teste RMS f?r 3 Gauss
+  # Teste RMS fuer 3 Gauss
   Means2 <- c(0,0,0)
   Deviations2 <- c(0,0,0)
   Weights2 <- c(0,0,0)
@@ -90,7 +90,7 @@ if(!missing(ListOfAdaptGauss)){
   }
   RMS2 <- sqrt(sum((Fi-ParetoDensity)^2))
   
-  # ?berpr?fe ob RMS1( 1 Gauss) oder RMS2 (3 Gauss ) kleiner ist. Speichere zugeh?rige means, deviations und weights
+  # ueberpruefe ob RMS1( 1 Gauss) oder RMS2 (3 Gauss ) kleiner ist. Speichere zugehoerige means, deviations und weights
   SSE1=RMS1^2*log(3)
   SSE2=RMS2^2*log(3*3)
   if (SSE1<SSE2){

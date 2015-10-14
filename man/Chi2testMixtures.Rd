@@ -22,7 +22,7 @@ Chi2testMixtures(Data,Means,SDs,Weights,IsLogDistribution,PlotIt,UpperLimit,VarN
 \details{
   Let O_i be the observed features and E_i be the expected number E,
   than the test statistic is defined with T=sum((O_i-E_i)^2/E_i)*1/m, where m the number of data points.
-  The expected number Ei may be derived for each bin with the null hypothesis that the data is from the distribution.
+  The expected number Ei may be derived for each bin with the null hypothesis that the data is from the distribution. Further details, see [Thrun & Ultsch, 2015].
 }
 \value{
 List with
@@ -33,6 +33,11 @@ List with
 	\item{Chi2Value }{the  TestStatistic i.e.: sum((ObsNrInBin(Ind)-ExpectedNrInBin(Ind))^2/ExpectedNrInBin(Ind)) with
                                  Ind = find(ExpectedNrInBin>=10)}
 }
-\references{Hartung, J., Elpelt, B., and Kloesener, K.H.: Statistik, 8. Aufl. Verlag Oldenburg (1991).}
+\references{Hartung, J., Elpelt, B., and Kloesener, K.H.: Statistik, 8. Aufl. Verlag Oldenburg (1991).
+
+Thrun, M. C., Ultsch, A.: Models of Income Distributions for Knowledge Discovery, European Conference on Data Analysis, DOI 10.13140/RG.2.1.4463.0244, pp. 28-29, Colchester 2015.
+
+ 
+}
 \author{Rabea Griese}
 

@@ -96,6 +96,7 @@ BinLimits = c(xx[1,1],xx[,2])                         # dies sind jetzt die Bin 
 
 # jetzt die erwartete Anzahl berechnen
 CDFGaussMixture = CDFMixtures(BinLimits,Means,SDs,Weights,IsLogDistribution)$CDFGaussMixture # cdf(GMM)
+
 AnzData =length(Data)
 ExpectedNrInBinCDF = CDFGaussMixture*AnzData
 ExpectedNrInBin = diff(ExpectedNrInBinCDF)
@@ -161,6 +162,8 @@ Chi2Diffs = Chi2Diffs[ClipInd]
 if (Chi2Value-AllDiffKernels[length(AllDiffKernels)] >1){ # Summe der Abweichungen liegt zu weit rechts
   Ch2cdfValue = 1;
 } else{ #durch interpolation den wert bestimmen
+#matlab: 
+#Ch2cdfValue = interp1([0;AllDiffKernels],[0;AllDiffCDF],Chi2Value, 'linear');  #den MaxDiff in cdf(Diff) lokalisieren
   Ch2cdfValue = approx(rbind(0,unname(AllDiffKernels)),rbind(0,unname(AllDiffCDF)),Chi2Value, 'linear')$y;  # den MaxDiff in cdf(Diff) lokalisieren
 } # if (Chi2Value-AllDiffKernels(end)) >1 # der wert liegt zu weit rechts
 

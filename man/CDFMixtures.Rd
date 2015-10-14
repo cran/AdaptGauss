@@ -20,7 +20,7 @@ CDFMixtures(Kernels,Means,SDs,Weights,IsLogDistribution)
 }
 
 \value{
-
+List with
   \item{CDFGaussMixture}{(1:N,1),  cdf of Sum of SingleGaussians at Kernels}
   \item{CDFSingleGaussian}{(1:N,1:L)  ,cdf of mixtures at Kernels}
 

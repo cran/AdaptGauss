@@ -17,11 +17,11 @@ paretoRadiusForGMM(Data,maximumNrSamples,plotDistancePercentiles)
 \value{
   numeric value, the Pareto radius.
 }
-\details{The Pareto-radius of the hyperspheres is derived from the optimation of information for minimal set size.}
+\details{The Pareto-radius of the hyperspheres is derived from the optimization of information for minimal set size.}
 \note{
   paretoRadiusForGMM() is a kernel density estimation for variable intervals.
 }
-\references{Ultsch, A.: Pareto Density Estimation: A Density Estimation for Knowledge Discovery, Baier D., Wernecke K.D. (Eds), In Innovations in Classification, Data Science, and Information Systems - Proceedings 27th Annual Conference of the German Classification Society (GfKL) 2003, Berlin, Heidelberg, Springer, pp, 91-100, 2003.}
+\references{Ultsch, A.: Pareto density estimation: A density estimation for knowledge discover, in  Baier, D.; Werrnecke, K. D., (Eds), Innovations in classification, data science, and information systems, Proc Gfkl 2003, pp 91-100, Springer, Berlin, 2005.}
 \author{Michael Thrun}
 \seealso{\code{\link{paretoDensityEstimationForGMM}}, \code{\link{OptimalNoBins}}}
 \keyword{kernel density estimation}

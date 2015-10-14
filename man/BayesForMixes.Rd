@@ -20,6 +20,7 @@ BayesForMixes(Data, Means, SDs, Weights, IsLogDistribution, PlotIt, CorrectBorde
 }
 
 \value{
+List with
   \item{Posteriors}{(1:N,1:L) of Posteriors corresponding to Data}
   \item{NormalizationFactor}{(1:N) denominator of Bayes theorem corresponding to Data}
 }

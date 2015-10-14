@@ -13,13 +13,13 @@ paretoDensityEstimationForGMM(Data,paretoRadius,kernels,MinAnzKernels)
     \item{MinAnzKernels}{Optional, minimal number of kernels, default MinAnzKernels==100 }
 }
 \value{
-
+List with
   \item{kernels }{numeric vector. data values at with Pareto Density is measured.}
   \item{paretoDensity}{numeric vector containing the determined density by ParetoRadius.}
   \item{paretoRadius}{numeric value.}
 }
 \details{
-Pareto Density Estimation (PDE) is a method for the estimation of probability density functions using hyperspheres. The Pareto-radius of the hyperspheres is derived from the optimation of information for minimal set size. It is shown, that Pareto Density is the best estimate for clusters of Gaussian structure. The method is shown to be robust when cluster overlap and when the variances differ across clusters.
+Pareto Density Estimation (PDE) is a method for the estimation of probability density functions using hyperspheres. The Pareto-radius of the hyperspheres is derived from the optimization of information for minimal set size. It is shown, that Pareto Density is the best estimate for clusters of Gaussian structure. The method is shown to be robust when cluster overlap and when the variances differ across clusters.
 }
 \author{Michael Thrun}
 \note{This is the best density estimation to judge Gaussian Mixtures  of the data see [Ultsch 2003]
@@ -34,5 +34,5 @@ Pareto Density Estimation (PDE) is a method for the estimation of probability de
 			yaxs='i',xlab='Data',ylab='PDE') 
   			
 }
-\references{Ultsch, A.: Pareto Density Estimation: A Density Estimation for Knowledge Discovery, Baier D., Wernecke K.D. (Eds), In Innovations in Classification, Data Science, and Information Systems - Proceedings 27th Annual Conference of the German Classification Society (GfKL) 2003, Berlin, Heidelberg, Springer, pp, 91-100, 2003.}
+\references{Ultsch, A.: Pareto density estimation: A density estimation for knowledge discover, in  Baier, D.; Werrnecke, K. D., (Eds), Innovations in classification, data science, and information systems, Proc Gfkl 2003, pp 91-100, Springer, Berlin, 2005.}
 \seealso{\code{\link{paretoRadiusForGMM}}}

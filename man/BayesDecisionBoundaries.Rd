@@ -20,7 +20,7 @@ BayesDecisionBoundaries(Means,SDs,Weights,IsLogDistribution,MinData,MaxData,Ycoo
 
 \value{            
   \item{DecisionBoundaries }{vector[1:L-1], Bayes decision boundaries }
-  \item{DBY }{if (Ycoor=TRUE), y values at the cross points of the Gaussians is also returned, that the return is a list of DecisionBoundaries and DBY}
+  \item{DBY }{if (Ycoor==TRUE), y values at the cross points of the Gaussians is also returned, that the return is a list of DecisionBoundaries and DBY}
 }
 \references{Duda, R. O., Hart, P. E., & Stork, D. G. (2001). Pattern classification. 2nd. Edition. New York, p. 512ff}
 \author{Michael Thrun, Rabea Griese}

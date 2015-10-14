@@ -27,7 +27,7 @@ PlotSymbol,xug,xog,LineWidth,PointWidth, ylab,main, ...)
 	\item{...}{Note: xlab cannot be changed, other parameters see \code{\link{qqplot}}}
 }
 \value{   
-
+List with
 \item{x}{The x coordinates of the points that were plotted}
 
 \item{y}{The original data vector, i.e., the corresponding y coordinates}
