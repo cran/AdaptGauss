@@ -62,7 +62,7 @@ if(AnzData<100)  AnzRepetitions = 5000
 RandGMMDataDiff = matrix(0,AnzRepetitions,1)
 
 for(i in c(1:AnzRepetitions)){
-   R = randomLogGMM(Means,SDs,Weights,IsLogDistribution,AnzData)
+   R = RandomLogGMM(Means,SDs,Weights,IsLogDistribution,AnzData)
    #[RandCDF,RandKernels] = ecdfUnique(R)
    dummy <- ecdf(R) # cdf(Diff)
    RandCDF <- c(0,get("y", envir = environment(dummy)))
@@ -104,12 +104,12 @@ if(PlotIt ==1){
   title('KS-test: comparison CDF(GMM) vs CDF(Data)',xlab='Data',ylab='red =CDF(GMM), blue=CDF(Data)');
   
   #     subplot(2,2,2);   # hier die fraglichen PDFs zeichnen
-  PlotGaussianMixtures(Data,Means,SDs,Weights,IsLogDistribution=IsLogDistribution,xlim=xlim,ylim=ylim,xlab='',ylab='',SingleGausses = T,SingleColor='magenta',MixtureColor='blue')
+  PlotMixtures(Data,Means,SDs,Weights,IsLogDistribution=IsLogDistribution,xlim=xlim,ylim=ylim,xlab='',ylab='',SingleGausses = T,SingleColor='magenta',MixtureColor='blue')
   title(paste0('max(Diff) at: ',KernelMaxDiff),xlab='Data',ylab='pdf(GMM), red= pdf(Data)')
   abline(v=KernelMaxDiff,col='green')
 #     subplot(2,2,3);
-  		pareto_radius2<-paretoRadiusForGMM(AllDiff) 
-			pdeVal2        <- paretoDensityEstimationForGMM(AllDiff,pareto_radius2)
+  		pareto_radius2<-ParetoRadius(AllDiff) 
+			pdeVal2        <- ParetoDensityEstimation(AllDiff,pareto_radius2)
 			xlim=c(min(MaxDiff*0.90,pdeVal2$kernels),max(pdeVal2$kernels))
 			plot(pdeVal2$kernels,pdeVal2$paretoDensity,type='l',xaxs='i',
 			yaxs='i',xlab='MaxDiff, mag = max(Diff)',ylab='pdf(KS-MaxDiff)',main='KS-Distribution of MaxDiff',xlim=xlim,col='blue') 

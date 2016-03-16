@@ -1,8 +1,8 @@
-qqplotGMM=function(Data,Means,SDs,Weights,IsLogDistribution=Means*0,Line=TRUE,PlotSymbol=20,
+QQplotGMM=function(Data,Means,SDs,Weights,IsLogDistribution=Means*0,Line=TRUE,PlotSymbol=20,
                    xug=NULL,xog=NULL,LineWidth=2,PointWidth=0.8,
                    ylab='Data',main='QQ-plot Data vs GMM',...)
-# qqplotfitGMM(Data,Means,SDs,Weights,IsLogDistribution,Line,PlotSymbol,xug,xog,LineWidth,PointWidth)
-# Quantile/Quantile = QQ-Plot im Vergleich. zu einem Gauss Mixture Model
+# QQplotGMM(Data,Means,SDs,Weights,IsLogDistribution,Line,PlotSymbol,xug,xog,LineWidth,PointWidth)
+# Quantile/Quantile = QQ-Plot im Vergleich. zu einem Gauss Mixture Model oder LGL Model
 # INPUT
 # Data(1:n)	             Daten, deren Verteilung verglichen werden soll
 # Means(1:L), SDs(1:L), Weights(1:L) die Paramter von Gaussians N(i) = Weights(i) * N(Means(i),SDs(i)
@@ -24,7 +24,7 @@ qqplotGMM=function(Data,Means,SDs,Weights,IsLogDistribution=Means*0,Line=TRUE,Pl
 
 # benutzt randomLogMix und qqplotfit
 # MT 2014, reimplementiert aus Matlab von ALU 
-# Aus historischen Gr?nden qqplotGMM MIT Ausgleichgerade
+# Aus historischen Gr?nden QQplotGMM MIT Ausgleichgerade
 
 {
   
@@ -33,7 +33,7 @@ qqplotGMM=function(Data,Means,SDs,Weights,IsLogDistribution=Means*0,Line=TRUE,Pl
 # LineSymbol='r-' nicht implementiert
 xlabel='Gaussian Mixture Model'
 
-GMM = randomLogGMM(Means,SDs,Weights,IsLogDistribution);
+GMM = RandomLogGMM(Means,SDs,Weights,IsLogDistribution);
 
  quants<-qqplot(GMM, Data, pch=PlotSymbol, col="blue", cex=PointWidth, xlab=xlabel, ylab=ylab, main=main,...) #MT: na.rm=TRUE argument weglassen
  if(Line){

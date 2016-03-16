@@ -1,5 +1,5 @@
-BayesForMixes <- function(Data, Means, SDs, Weights, IsLogDistribution = 0*Means, PlotIt = FALSE, CorrectBorders = FALSE){
-# V = BayesForMixes(Data, Means, SDs, Weights, IsLogDistribution, PlotIt, CorrectBorders)
+Bayes4Mixtures <- function(Data, Means, SDs, Weights, IsLogDistribution = 0*Means, PlotIt = FALSE, CorrectBorders = FALSE){
+# V = Bayes4Mixtures(Data, Means, SDs, Weights, IsLogDistribution, PlotIt, CorrectBorders)
 # INPUT
 # Data(1:N)            vector of data,  may contain NaN
 # Means(1:C),SDs(1:C),Weights(1:C) parameters of the Gaussians (Mean, StdDeviation, Weight)

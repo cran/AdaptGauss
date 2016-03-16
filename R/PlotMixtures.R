@@ -1,6 +1,6 @@
-PlotGaussianMixtures <- function(Data, Means, SDs, Weights = rep(1/length(Means),length(Means)), IsLogDistribution = rep(FALSE,length(Means)),SingleColor = 'blue', MixtureColor = 'red',DataColor='black',SingleGausses=FALSE,axes=TRUE,xlab, ylab,xlim, ylim,  ...){
-# PlotGaussianMixtures(Data,Means,SDs,Weights,SingleColor,MixtureColor,IsLogDistribution);
-# PlotGaussianMixtures(Data,Means,SDs,Weights,SingleColor,MixtureColor);
+PlotMixtures <- function(Data, Means, SDs, Weights = rep(1/length(Means),length(Means)), IsLogDistribution = rep(FALSE,length(Means)),SingleColor = 'blue', MixtureColor = 'red',DataColor='black',SingleGausses=FALSE,axes=TRUE,xlab, ylab,xlim, ylim,  ...){
+# PlotMixtures(Data,Means,SDs,Weights,IsLogDistribution,SingleColor,MixtureColor);
+# PlotMixtures(Data,Means,SDs,Weights,IsLogDistribution);
 # Plot a Mixture of Gaussians
 
 # INPUT
@@ -9,7 +9,7 @@ PlotGaussianMixtures <- function(Data, Means, SDs, Weights = rep(1/length(Means)
 # SDs(1:L,1)                estimated Gaussian Kernels = standard deviations
 # OPTIONAL
 # Weights(1:L,1)              relative number of points in Gaussians (prior probabilities): sum(Weights) ==1, default 1/L
-# IsLogDistribution(1:L)      default ==0*(1:L), gibt an ob die jeweilige Verteilung eine Lognormaverteilung ist
+# IsLogDistribution(1:L)      default ==0*(1:L), gibt an ob die jeweilige Verteilung eine Lognormalverteilung ist
 #
 # SingleColor                 PlotSymbol of all the single gaussians, default magenta
 # MixtureColor                PlotSymbol of the mixture default black
@@ -18,6 +18,7 @@ PlotGaussianMixtures <- function(Data, Means, SDs, Weights = rep(1/length(Means)
 # ...							            other plot arguments like xlim = c(1,10)
 #
 # Author: MT 08/2015, 
+# 1.Editor: MT 1/2016: PDF4Mixtures als eigene Funktion ausgelagert
 #Nota: Based on a Version of HeSa Feb14 (reimplemented from ALUs matlab version)      
 
 #oldpar <- par(no.readonly = TRUE)
@@ -35,17 +36,20 @@ if(length(IsLogDistribution)!=length(Means)){
 }
 X = sort(unique(Data)) # sort ascending and make sure of uniqueness
 AnzGaussians <- length(Means)
-SingleGaussian <- matrix(0,length(X),AnzGaussians)
-GaussMixture=X*0 # init
+#SingleGaussian <- matrix(0,length(X),AnzGaussians)
+#GaussMixture=X*0 # init
 if(SingleColor  != 0){
-	for(g in c(1:AnzGaussians)){
-		if(IsLogDistribution[g] == TRUE){ # LogNormal 
-			SingleGaussian[,g] <- symlognpdf(X,Means[g],SDs[g])*Weights[g] # LogNormal 
-		}else{ # Gaussian
-			SingleGaussian[,g] = dnorm(X,Means[g],SDs[g])*Weights[g]
-		}# if IsLogDistribution(i) ==T  
-		GaussMixture =  GaussMixture + SingleGaussian[,g]
-	} # for g
+# 	for(g in c(1:AnzGaussians)){
+# 		if(IsLogDistribution[g] == TRUE){ # LogNormal 
+# 			SingleGaussian[,g] <- symlognpdf(X,Means[g],SDs[g])*Weights[g] # LogNormal 
+# 		}else{ # Gaussian
+# 			SingleGaussian[,g] = dnorm(X,Means[g],SDs[g])*Weights[g]
+# 		}# if IsLogDistribution(i) ==T  
+# 		GaussMixture =  GaussMixture + SingleGaussian[,g]
+# 	} # for g
+	pdfV=Pdf4Mixtures(X, Means, SDs, Weights)
+	SingleGaussian=pdfV$PDF
+	GaussMixture=pdfV$PDFmixture
 	# Limits
   GaussMixtureInd=which(GaussMixture>0.00001)
 	if(missing(xlim)){ # if no limits for x-axis are comitted
@@ -71,12 +75,12 @@ if(SingleColor  != 0){
     		points(X, SingleGaussian[,g], col = SingleColor, type = 'l', xlim = xlim, ylim = ylim, ...)
     	}
     }
-    points(X, GaussMixture, col = MixtureColor, type = 'l',xlim = xlim,...)
+   points(X, GaussMixture, col = MixtureColor, type = 'l',xlim = xlim,...)
 } else{#SingleColor  == 0
   plot(X, GaussMixture, col = MixtureColor, type = 'l', xlim, ylim,axes=FALSE, ...)
 }
-pareto_radius<-paretoRadiusForGMM(Data)
-pdeVal        <- paretoDensityEstimationForGMM(Data,pareto_radius)
+pareto_radius<-ParetoRadius(Data)
+pdeVal        <- ParetoDensityEstimation(Data,pareto_radius)
 points(pdeVal$kernels,pdeVal$paretoDensity,type='l', xlim = xlim, ylim = ylim,col=DataColor,...)   
 
 
@@ -89,40 +93,6 @@ if(axes){
 }
 #par(oldpar) # geht nicht, da sonst zB. abline( v =  0.4) nicht bei 0.4 sitzt...
 
-# symlognpdf
-#########################################################
-symlognpdf <- function(Data,M,S){
-  #pdf = symlognpdf(Data,M,S);
-  # for M>0 same as dlnorm(Data,M,S); (Dichte der log-Normalverteilung)
-  # for M < 0: mirrored at y axis
-  #INPUT
-  #Data[1:n]  x-values
-  #M,S        Mean and Sdev of lognormal
-  
-  temp<-symlognSigmaMue(M,S)
-  mu<-temp$mu
-  sig<-temp$sig
-  if(M>=0){
-    pdfkt<-dlnorm(Data,meanlog=mu,sdlog=sig)  
-  }else{
-    pdfkt<-Data*0
-    negDataInd<-which(Data<0)
-    pdfkt[negDataInd] <- dlnorm(-Data[negDataInd],meanlog=mu,sdlog=sig)
-    plot(Data,pdfkt)
-  }
-  return (pdfkt) 
-  
-  symlognSigmaMue <-  function(M,S){
-    
-    variance<-log(S*S/(M*M)+1)
-    sig<-sqrt(variance)
-    mu<-log(abs(M))-0.5*variance
-    return (list(variance=variance,sig=sig,mu=mu)) 
-    
-  }
-  
-} # end symlognpdf
-#########################################################
 #return(list(X,GaussMixture))
-}# end PlotGaussianMixtures
+}# end PlotMixtures
 

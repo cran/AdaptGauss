@@ -1,12 +1,12 @@
-\name{paretoRadiusForGMM}
-\alias{paretoRadiusForGMM}
+\name{ParetoRadius}
+\alias{ParetoRadius}
 
-\title{ParetoRadius for GMM}
+\title{ParetoRadius for distributions}
 \description{
   Calculation of the ParetoRadius i.e. the 18 percentiles of all mutual Euclidian distances in data.
 }
 \usage{
-paretoRadiusForGMM(Data,maximumNrSamples,plotDistancePercentiles)
+ParetoRadius(Data,maximumNrSamples,plotDistancePercentiles)
 }
 \arguments{
   \item{Data}{numeric data vector}
@@ -19,9 +19,9 @@ paretoRadiusForGMM(Data,maximumNrSamples,plotDistancePercentiles)
 }
 \details{The Pareto-radius of the hyperspheres is derived from the optimization of information for minimal set size.}
 \note{
-  paretoRadiusForGMM() is a kernel density estimation for variable intervals.
+  ParetoRadius() is a kernel density estimation for variable intervals.
 }
 \references{Ultsch, A.: Pareto density estimation: A density estimation for knowledge discover, in  Baier, D.; Werrnecke, K. D., (Eds), Innovations in classification, data science, and information systems, Proc Gfkl 2003, pp 91-100, Springer, Berlin, 2005.}
 \author{Michael Thrun}
-\seealso{\code{\link{paretoDensityEstimationForGMM}}, \code{\link{OptimalNoBins}}}
+\seealso{\code{\link{ParetoDensityEstimation}}, \code{\link{OptimalNoBins}}}
 \keyword{kernel density estimation}

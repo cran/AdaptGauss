@@ -1,12 +1,12 @@
-\name{Intersect2Mixes}
-\alias{Intersect2Mixes}
+\name{Intersect2Mixtures}
+\alias{Intersect2Mixtures}
 
 \title{Intersect of two Gaussians}
 \description{
 Finds the intersect of two gaussians or log gaussians
 }
 \usage{
-Intersect2Mixes(Mean1,SD1,Weight1,Mean2,SD2,Weight2,IsLogDistribution,MinData,MaxData)
+Intersect2Mixtures(Mean1,SD1,Weight1,Mean2,SD2,Weight2,IsLogDistribution,MinData,MaxData)
 }
 
 \arguments{

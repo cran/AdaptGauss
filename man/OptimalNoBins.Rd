@@ -33,7 +33,7 @@ David W. Scott Jerome P. Keating: A Primer on Density Estimation for the Great H
  optBreaks = seq(minData, maxData, i/optNrOfBins) # bins in fixed intervals
  hist(Data, breaks=optBreaks)
 }
-\seealso{\code{\link{paretoRadiusForGMM}}}
+\seealso{\code{\link{ParetoRadius}}}
 \keyword{ histogram }
 \keyword{ bins }
 \keyword{kernel density estimation}

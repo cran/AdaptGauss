@@ -1,5 +1,5 @@
-\name{PlotGaussianMixtures}
-\alias{PlotGaussianMixtures}
+\name{PlotMixtures}
+\alias{PlotMixtures}
 
 \title{Shows GMM}
 \description{
@@ -12,7 +12,7 @@
 	Blue is the color of components of the mixture
 }
 \usage{
-PlotGaussianMixtures(Data, Means, SDs, Weights,IsLogDistribution, SingleColor, 
+PlotMixtures(Data, Means, SDs, Weights,IsLogDistribution, SingleColor, 
 MixtureColor,DataColor, SingleGausses,axes, xlab, ylab,xlim, ylim, ...)
 }
 
@@ -34,13 +34,12 @@ MixtureColor,DataColor, SingleGausses,axes, xlab, ylab,xlim, ylim, ...)
   \item{...}{other plot arguments like xlim = c(1,10)}
   
 }
-\details{Original function was implemented by Sabine Herda, this is a heavily modified version}
 \author{Michael Thrun}
 \examples{
 data=c(rnorm(1000),rnorm(2000)+2,rnorm(1000)*2-1)
-PlotGaussianMixtures(data,c(-1,0,2),c(2,1,1),c(0.25,0.25,0.5),SingleColor='blue',SingleGausses=TRUE)
+PlotMixtures(data,c(-1,0,2),c(2,1,1),c(0.25,0.25,0.5),SingleColor='blue',SingleGausses=TRUE)
 }
-\seealso{\code{\link{PlotGaussMixesAndBoundaries}}}
+\seealso{\code{\link{PlotMixturesAndBoundaries}}}
 
 
 \keyword{GMM}

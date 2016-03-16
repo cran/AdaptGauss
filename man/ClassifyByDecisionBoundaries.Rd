@@ -22,7 +22,7 @@ Cls(1:n,1:d)               classiffication of Data, such that 1= first component
 
 \author{Michael Thrun}
 \references{Duda, R. O., Hart, P. E., & Stork, D. G. (2001). Pattern classification. 2nd. Edition. New York, p. 512ff}
-\seealso{\code{\link{BayesDecisionBoundaries}}, \code{\link{BayesForMixes}}}
+\seealso{\code{\link{BayesDecisionBoundaries}}, \code{\link{Bayes4Mixtures}}}
 
 \keyword{ClassifyByDecisionBoundaries}
 

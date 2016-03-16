@@ -1,4 +1,4 @@
-paretoDensityEstimationForGMM= function(Data,paretoRadius=NULL,kernels=NULL,MinAnzKernels=100){
+ParetoDensityEstimation= function(Data,paretoRadius=NULL,kernels=NULL,MinAnzKernels=100){
 #  V = ParetoDensityEstimation(Data,ParetoRadius,Kernels)
 #  V= ParetoDensityEstimation(Data,ParetoRadius)
 #  Estimates the Pareto Density for a one dimensional distibution
@@ -7,15 +7,15 @@ paretoDensityEstimationForGMM= function(Data,paretoRadius=NULL,kernels=NULL,MinA
 #  INPUT
 #  Data                    die eindimensional verteilten Daten
 #  OPTIONAL
-#  ParetoRadius            der Pareto Radius, wenn nicht angegeben, wird er berechnet
-#  Kernels                 Data values at which ParetoDensity is measured , use plot(Kernels,ParetoDensity) for display
+#  paretoRadius            der Pareto Radius, wenn nicht angegeben, wird er berechnet
+#  kernels                 Data values at which ParetoDensity is measured , use plot(Kernels,ParetoDensity) for display
 #                          wird bestimmt, wenn nicht angegeben oder Kernels ==0
 #  MinAnzKernels           Minimale Anzahl Kernls, wenn nicht angegeben oder MinAnzKernelss ==0 =>  MinAnzKernels==100	
 # 
 #  OUTPUT
 #  Kernels                 Data values at which ParetoDensity is measured , use plot(Kernels,ParetoDensity) for display
-#  ParetoDensity           die mit dem ParatoRadius ermittelte Dichte
-#  ParetoRadius            der Pareto Radius
+#  paretoDensity           die mit dem ParatoRadius ermittelte Dichte
+#  paretoRadius            der Pareto Radius
 # 
 #  Author: MT 2015/06 uebernommen von ALU 2003
 
@@ -60,7 +60,7 @@ return(list(elements=elements,noNaNInd=noNaNInd,nrElements=nrElements))
 
 
 	if(paretoRadius==0 || length(paretoRadius)==0)
-		paretoRadius=paretoRadiusForGMM(Data)
+		paretoRadius=ParetoRadius(Data)
 	
 	Data <- noNaN_hlp(Data)$elements
 	Data <- as.matrix(Data)

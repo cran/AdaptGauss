@@ -1,12 +1,12 @@
-\name{BayesForMixes}
-\alias{BayesForMixes}
+\name{Bayes4Mixtures}
+\alias{Bayes4Mixtures}
 
 \title{Posterioris of Bayes Theorem}
 \description{
   Calculates the posterioris of Bayes theorem
 }
 \usage{
-BayesForMixes(Data, Means, SDs, Weights, IsLogDistribution, PlotIt, CorrectBorders)
+Bayes4Mixtures(Data, Means, SDs, Weights, IsLogDistribution, PlotIt, CorrectBorders)
 }
 \arguments{
   \item{Data}{vector (1:N) of data points}

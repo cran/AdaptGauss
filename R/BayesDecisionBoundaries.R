@@ -46,7 +46,7 @@ DBY = DecisionBoundaries*0 # init
 # now intersect 2 Gauss
 for(i in 1:L1){
 	i1 = i+1
-  Decision = Intersect2Mixes(Means[i],SDs[i],Weights[i],Means[i1],SDs[i1],Weights[i1],IsLogDistribution[i:i1])
+  Decision = Intersect2Mixtures(Means[i],SDs[i],Weights[i],Means[i1],SDs[i1],Weights[i1],IsLogDistribution[i:i1])
   DecisionBoundaries[i] = Decision$CutX
   DBY[i] = Decision$CutY
   DecisionBoundaries[i] = min(MaxData,DecisionBoundaries[i]);

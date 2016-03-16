@@ -1,4 +1,4 @@
-AdaptGauss = function(Data,Means=NaN,SDs=NaN,Weights=NaN,ParetoRadius=NaN,LB=NaN,HB=NaN,ListOfAdaptGauss,fast=T){
+AdaptGauss = function(Data,Means=NaN,SDs=NaN,Weights=NaN,ParetoRadius=NaN,LB=NaN,HB=NaN,ListOfAdaptGauss,fast=TRUE){
 #    Out=AdaptGauss2(Data,Means,SDs,Weights,ParetoRadius,LB,HB);
 #    adapt interactively a Gaussians Mixture Model GMM to the empirical PDF of the data such that N(M,S)*W is a  model for Data
 #   
@@ -51,68 +51,96 @@ if(!missing(ListOfAdaptGauss)){
          stop("Data has to be numeric, maybe use as.numeric(Data)")     
      }
   }  
+  
+  # rsampleAdaptGauss
+  ############################################################
+  `rsampleAdaptGauss` <- function(k,n,uniq=TRUE,exact=TRUE){
+    
+    index = ceiling(runif(k)*n) # Calculate k of n values.
+    if(uniq==TRUE){# if unique, avoide duplicates.
+      if(k>n&exact){ # Don't run in infinite loop.
+        print("The first parameter has to be <= the second.")
+        print("You choose uniq = TRUE. This would cause an infinite loop.")
+        print("Abort function.")
+      }
+      else{
+        index = unique(index)
+        while(exact&(length(index)<k)){
+          index = c(index,ceiling(runif(k-length(index))*n))
+          index = unique(index)
+        }
+        return(index)
+      }
+    }
+    else{
+      return(index)
+    }
+  }
+  ############################################################
+  
+  # getOptGauss
+  #########################################################################
+  `getOptGauss` <- function(Data, Kernels, ParetoDensity,fast){ 
+    # Teste RMS fuer einen Gauss
+    Mean1 <- mean(Data)
+    Deviation1 <- sd(Data)
+    Weight1 <- 1
+    Var=EMGauss(Data,fast=fast)
+    Mean1 <- Var$Means
+    Deviation1 <- Var$SDs
+    Weight1 <- Var$Weights
+    Fi <- dnorm(Kernels,Mean1,Deviation1)*Weight1
+    RMS1 <- sqrt(sum((Fi-ParetoDensity)^2))
+    
+    # Teste RMS fuer 3 Gauss
+    Means2 <- c(0,0,0)
+    Deviations2 <- c(0,0,0)
+    Weights2 <- c(0,0,0)
+    Valskmeans <- kmeans(Data,3,iter.max=100)
+    KValues <- Valskmeans$cluster
+    #print(KValues2)
+    for (i in 1:3){
+      Means2[i] <- mean(Data[KValues==i])
+      Deviations2[i] <- sd(Data[KValues==i])
+      Weights2[i] <- sum(KValues==i)
+      if (is.na(Deviations2[i])) {Deviations2[i] <- 0}
+    }
+    Weights2 <- Weights2/length(KValues)
+    Var=EMGauss(Data,Means2,Deviations2,Weights2,10,fast=fast)
+    Means2 <- Var$Means
+    Deviations2 <- Var$SDs
+    Weights2 <- Var$Weights
+    Fi <- 0
+    for (i in 1:3){
+      Fi <- Fi+dnorm(Kernels,Means2[i],Deviations2[i])*Weights2[i]
+    }
+    RMS2 <- sqrt(sum((Fi-ParetoDensity)^2))
+    
+    # ueberpruefe ob RMS1( 1 Gauss) oder RMS2 (3 Gauss ) kleiner ist. Speichere zugehoerige means, deviations und weights
+    SSE1=RMS1^2*log(3)
+    SSE2=RMS2^2*log(3*3)
+    if (SSE1<SSE2){
+      means <- Mean1
+      deviations <- Deviation1
+      weights <- Weight1
+    } else {
+      means <- Means2
+      deviations <- Deviations2
+      weights <- Weights2
+    }
+    # Ordne gaussians nach mean
+    order <- order(means)
+    means <- means[order]
+    deviations <- deviations[order]
+    weights <- weights[order]
+    out=list(means=means,deviations=deviations,weights=weights)
+    
+    
+    return(out)
+  }
+  #########################################################################
+  
 
-# getOptGauss
-#########################################################################
-`getOptGauss` <- function(Data, Kernels, ParetoDensity,fast){ 
-  # Teste RMS fuer einen Gauss
-  Mean1 <- mean(Data)
-  Deviation1 <- sd(Data)
-  Weight1 <- 1
-  Var=EMGauss(Data,fast=fast)
-  Mean1 <- Var$Means
-  Deviation1 <- Var$SDs
-  Weight1 <- Var$Weights
-  Fi <- dnorm(Kernels,Mean1,Deviation1)*Weight1
-  RMS1 <- sqrt(sum((Fi-ParetoDensity)^2))
-  
-  # Teste RMS fuer 3 Gauss
-  Means2 <- c(0,0,0)
-  Deviations2 <- c(0,0,0)
-  Weights2 <- c(0,0,0)
-  Valskmeans <- kmeans(Data,3,iter.max=100)
-  KValues <- Valskmeans$cluster
-  #print(KValues2)
-  for (i in 1:3){
-    Means2[i] <- mean(Data[KValues==i])
-    Deviations2[i] <- sd(Data[KValues==i])
-    Weights2[i] <- sum(KValues==i)
-    if (is.na(Deviations2[i])) {Deviations2[i] <- 0}
-  }
-  Weights2 <- Weights2/length(KValues)
-  Var=EMGauss(Data,Means2,Deviations2,Weights2,10,fast=fast)
-  Means2 <- Var$Means
-  Deviations2 <- Var$SDs
-  Weights2 <- Var$Weights
-  Fi <- 0
-  for (i in 1:3){
-    Fi <- Fi+dnorm(Kernels,Means2[i],Deviations2[i])*Weights2[i]
-  }
-  RMS2 <- sqrt(sum((Fi-ParetoDensity)^2))
-  
-  # ueberpruefe ob RMS1( 1 Gauss) oder RMS2 (3 Gauss ) kleiner ist. Speichere zugehoerige means, deviations und weights
-  SSE1=RMS1^2*log(3)
-  SSE2=RMS2^2*log(3*3)
-  if (SSE1<SSE2){
-    means <- Mean1
-    deviations <- Deviation1
-    weights <- Weight1
-  } else {
-    means <- Means2
-    deviations <- Deviations2
-    weights <- Weights2
-  }
-  # Ordne gaussians nach mean
-  order <- order(means)
-  means <- means[order]
-  deviations <- deviations[order]
-  weights <- weights[order]
-  out=list(means=means,deviations=deviations,weights=weights)
-
-  
-  return(out)
- }
-#########################################################################
 
   outputApp=runApp(list(
     ## ui.R --> stellt oberfl?che her
@@ -250,19 +278,19 @@ if(!missing(ListOfAdaptGauss)){
       data <- dataNew
       # Reduce Data to 10000 Elements, if larger than 10000 (?bersch?ssige Datenpunkte werden randomisiert entfernt)
       if (length(data)>10000){
-        data <- data[rsample(10000,length(data))];
+        data <- data[rsampleAdaptGauss(10000,length(data))];
         print("Reducing to 10000 datapoints");
       } 
       # Bestimme Pareto Density inkl. Kernels
       if (is.nan(ParetoRadius)){ 
-        ParetoRadius<-paretoRadiusForGMM(data) 
+        ParetoRadius<-ParetoRadius(data) 
         nRow=length(data)
         #MT: Halte ich nicht fuer plausibel
         #if (nRow>1024){
        #   ParetoRadius = ParetoRadius * 4 /(nRow^0.2);
         #}
       }
-        ParetoDensityEstimationVar <- paretoDensityEstimationForGMM(data,paretoRadius=ParetoRadius);
+        ParetoDensityEstimationVar <- ParetoDensityEstimation(data,paretoRadius=ParetoRadius);
       ParetoDensity <- ParetoDensityEstimationVar$paretoDensity;
       Kernels <- ParetoDensityEstimationVar$kernels; 
       # Setze Werte f?r Means, deviations und weights, falls nicht ?bergeben
@@ -574,7 +602,7 @@ if(!missing(ListOfAdaptGauss)){
       # Plotten der Grafik (nur bei Befehl (befehl$plot))
       output$PDE <- renderPlot({
         befehl$plot
-        #print("PDE estimation using ParetoDensityEstimationForGMM... ");
+        #print("PDE estimation using ParetoDensityEstimation... ");
         #Plotte Pareto Density
         plot(Kernels, ParetoDensity,xlim=xlimit,ylim=ylimit, col="black", axes = FALSE, xlab = "Data", ylab = "Pareto Density Estimation", type="l", lwd=3,xaxs='i',yaxs='i')
         axis(1,xlim=xlimit,col="black",las=1) #x-Achse
@@ -600,13 +628,6 @@ if(!missing(ListOfAdaptGauss)){
             par(new = TRUE) # der befehl das der n?chste den alten nicht ?bermalt
           }
         }
-        # plotte und erstelle current gaussian (in Gr?n)
-          #Fi=dnorm(Kernels,GM[currGauss],GS[currGauss])*GW[currGauss]
-          #FSum = FSum+Fi
-          #if (input$showComponents){ 
-          #plot(Kernels, Fi,xlim=xlimit,ylim=ylimit, col="green", axes = FALSE, xlab = " ", , ylab = " ", type="l", lwd=3)
-          #par(new = TRUE) # der befehl das der n?chste den alten nicht ?bermalt
-          #}
         # Plotte Summe ?ber alle gaussians (in Rot)
         points(Kernels, FSum,xlim=xlimit,ylim=ylimit, col="red", type="l", lwd=3)
         par(new = TRUE) # der befehl das der n?chste den alten nicht ?bermalt
@@ -747,9 +768,16 @@ if(!missing(ListOfAdaptGauss)){
           output <- list(Means=GM,SDs=GS,Weights=GW,ParetoRadius=ParetoRadius,RMS=RMS,BayesBoundaries=BB)
           stopApp(output)
         }
+      })# end observe CloseButton and PlotFig
+      
+      session$onSessionEnded(function() {
+        print("close App")
+        output <- list(Means=GM,SDs=GS,Weights=GW,ParetoRadius=ParetoRadius,RMS=RMS,BayesBoundaries=BB)
+        stopApp(output)
+        # write out everything into files
       })
       
-    }
+    }# end function server
     
     ))
   
@@ -757,35 +785,8 @@ if(!missing(ListOfAdaptGauss)){
 
   return(outputApp)
 
-
-
-  # rsample
-  ############################################################
-  `rsample` <- function(k,n,uniq=TRUE,exact=TRUE){
-    
-    index = ceiling(runif(k)*n) # Calculate k of n values.
-    if(uniq==TRUE){# if unique, avoide duplicates.
-      if(k>n&exact){ # Don't run in infinite loop.
-        print("The first parameter has to be <= the second.")
-        print("You choose uniq = TRUE. This would cause an infinite loop.")
-        print("Abort function.")
-      }
-      else{
-        index = unique(index)
-        while(exact&(length(index)<k)){
-          index = c(index,ceiling(runif(k-length(index))*n))
-          index = unique(index)
-        }
-        return(index)
-      }
-    }
-    else{
-      return(index)
-    }
-  }
-  ############################################################
-
 }
+
 
 ## Benutzte Funktionen: Subversion\PUB\dbt\...
 # dbt.EMforGauss\EMGauss.R

@@ -1,14 +1,14 @@
-\name{paretoDensityEstimationForGMM}
-\alias{paretoDensityEstimationForGMM}
+\name{ParetoDensityEstimation}
+\alias{ParetoDensityEstimation}
 \title{Pareto Density Estimation}
 \description{
 This function estimates the Pareto Density for the distribution of one variable.}
 \usage{
-paretoDensityEstimationForGMM(Data,paretoRadius,kernels,MinAnzKernels)
+ParetoDensityEstimation(Data,paretoRadius,kernels,MinAnzKernels)
 }
 \arguments{
   \item{Data}{numeric vector of data.}
-  \item{paretoRadius}{Optional, numeric value, see  \code{\link{paretoRadiusForGMM}}}
+  \item{paretoRadius}{Optional, numeric value, see  \code{\link{ParetoRadius}}}
   \item{kernels}{Optional, numeric vector. data values where pareto density is measured at. If 0 (by default) kernels will be computed. }
     \item{MinAnzKernels}{Optional, minimal number of kernels, default MinAnzKernels==100 }
 }
@@ -26,13 +26,13 @@ Pareto Density Estimation (PDE) is a method for the estimation of probability de
 }
 \examples{
 			data = c(rnorm(1000),rnorm(2000)+2,rnorm(1000)*2-1)
-			# Optional, if not given paretoDensityEstimationForGMM() 
-			# calls paretoRadiusForGMM()
-			pareto_radius<-paretoRadiusForGMM(data) 
-			pdeVal        <- paretoDensityEstimationForGMM(data,pareto_radius)
+			# Optional, if not given ParetoDensityEstimation() 
+			# calls ParetoRadius()
+			pareto_radius<-ParetoRadius(data) 
+			pdeVal        <- ParetoDensityEstimation(data,pareto_radius)
 			plot(pdeVal$kernels,pdeVal$paretoDensity,type='l',xaxs='i',
 			yaxs='i',xlab='Data',ylab='PDE') 
   			
 }
 \references{Ultsch, A.: Pareto density estimation: A density estimation for knowledge discover, in  Baier, D.; Werrnecke, K. D., (Eds), Innovations in classification, data science, and information systems, Proc Gfkl 2003, pp 91-100, Springer, Berlin, 2005.}
-\seealso{\code{\link{paretoRadiusForGMM}}}
+\seealso{\code{\link{ParetoRadius}}}

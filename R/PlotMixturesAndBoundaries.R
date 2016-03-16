@@ -1,4 +1,4 @@
-PlotGaussMixesAndBoundaries <-function(Data, Means, SDs, Weights, IsLogDistribution = rep(FALSE,length(Means)), SingleColor = 'blue', MixtureColor = 'red',DataColor='black', BoundaryColor = 'magenta', xlab, ylab, ...){
+PlotMixturesAndBoundaries <-function(Data, Means, SDs, Weights, IsLogDistribution = rep(FALSE,length(Means)), SingleColor = 'blue', MixtureColor = 'red',DataColor='black', BoundaryColor = 'magenta', xlab, ylab, ...){
 #PlotGaussMixesAndBoundaries(Data,Means,SDs,Weights,SingleColor,MixtureColor)
 # Plot a Mixture of Gaussian/LogNormal and Bayesian decision boundaries
 
@@ -41,7 +41,7 @@ dec = BayesDecisionBoundaries(Means,SDs,Weights,IsLogDistribution,Ycoor=T)
   #print('dec was a list, assuming usage of BayesDecisionBoundaries()')
 #}
 # Plot Gaussians
-PlotGaussianMixtures(Data,Means,SDs,Weights,IsLogDistribution,SingleColor,MixtureColor,DataColor=DataColor, xlab = xlab, ylab  = ylab,...)
+PlotMixtures(Data,Means,SDs,Weights,IsLogDistribution,SingleColor,MixtureColor,DataColor=DataColor, xlab = xlab, ylab  = ylab,...)
 
 # intersecions
 for (i in 1:length(DecisionBoundaries)){

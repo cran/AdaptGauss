@@ -1,5 +1,5 @@
-randomLogGMM=function(Means,SDs,Weights,IsLogDistribution,TotalNoPoints=1000){
-  # GMM = randomLogGMM(Means,SDs,Weights,IsLogDistribution,TotalNoPoints)
+RandomLogGMM=function(Means,SDs,Weights,IsLogDistribution,TotalNoPoints=1000){
+  # GMM = RandomLogGMM(Means,SDs,Weights,IsLogDistribution,TotalNoPoints)
   # genereierung von ZufalsDaten, die einer Mischung von Vereilungen aus
   # Gauss & Log-Normalen folgt
   # INPUT

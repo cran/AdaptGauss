@@ -1,12 +1,12 @@
-\name{qqplotGMM}
-\alias{qqplotGMM}
+\name{QQplotGMM}
+\alias{QQplotGMM}
 
 \title{Quantile Quantile Plot of Data}
 \description{
   Quantile Quantile plot of data against gaussian distribution mixture model with optional best-fit-line
 }
 \usage{
-qqplotGMM(Data,Means,SDs,Weights,IsLogDistribution,Line,
+QQplotGMM(Data,Means,SDs,Weights,IsLogDistribution,Line,
 PlotSymbol,xug,xog,LineWidth,PointWidth, ylab,main, ...)
 }
 
@@ -32,12 +32,15 @@ List with
 
 \item{y}{The original data vector, i.e., the corresponding y coordinates}
 }
+\details{
+Only verified for a Gaussian Mixture Model, usage of IsLogDistribution for LogNormal Modes is experimental!
+}
 \references{Michael, J. R. (1983). The stabilized probability plot. Biometrika, 70(1), 11-17.}
 \author{Michael Thrun}
 
 \examples{
 data=c(rnorm(1000),rnorm(2000)+2,rnorm(1000)*2-1)
-qqplotGMM(data,c(-1,0,2),c(2,1,1),c(0.25,0.25,0.5))
+QQplotGMM(data,c(-1,0,2),c(2,1,1),c(0.25,0.25,0.5))
 
 }
 \seealso{\code{\link{qqplot}}}

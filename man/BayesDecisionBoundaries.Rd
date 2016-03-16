@@ -24,7 +24,7 @@ BayesDecisionBoundaries(Means,SDs,Weights,IsLogDistribution,MinData,MaxData,Ycoo
 }
 \references{Duda, R. O., Hart, P. E., & Stork, D. G. (2001). Pattern classification. 2nd. Edition. New York, p. 512ff}
 \author{Michael Thrun, Rabea Griese}
-\seealso{\code{\link{AdaptGauss}},\code{\link{Intersect2Mixes}},\code{\link{BayesForMixes}}}
+\seealso{\code{\link{AdaptGauss}},\code{\link{Intersect2Mixtures}},\code{\link{Bayes4Mixtures}}}
 \keyword{Bayes}
 \keyword{BayesDecisionBoundaries}
 \keyword{Boundaries}

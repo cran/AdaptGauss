@@ -1,5 +1,5 @@
-\name{PlotGaussMixesAndBoundaries}
-\alias{PlotGaussMixesAndBoundaries}
+\name{PlotMixturesAndBoundaries}
+\alias{PlotMixturesAndBoundaries}
 
 \title{Shows GMM with Boundaries}
 \description{
@@ -12,7 +12,7 @@
 	Magenta are the Bayes boundaries
 }
 \usage{
-PlotGaussMixesAndBoundaries(Data, Means, SDs, Weights, IsLogDistribution,
+PlotMixturesAndBoundaries(Data, Means, SDs, Weights, IsLogDistribution,
  SingleColor, MixtureColor,DataColor, BoundaryColor, xlab, ylab, ...)
 }
 
@@ -29,7 +29,7 @@ PlotGaussMixesAndBoundaries(Data, Means, SDs, Weights, IsLogDistribution,
   \item{BoundaryColor}{Optional, Color of bayesian boundaries}
     \item{xlab}{Optional, x label, see \code{\link{plot}}}
 	  \item{ylab}{Optional, y label, ee \code{\link{plot}}}
-		\item{...}{Optional, see \code{\link{plot}} for plot properties and for \code{SingleGausses} \code{\link{PlotGaussianMixtures}}}
+		\item{...}{Optional, see \code{\link{plot}} for plot properties and for \code{SingleGausses} \code{\link{PlotMixtures}}}
 }
 \details{
 you may also set SingleGausses=T than components of the mixture in blue will be shown.
@@ -37,7 +37,7 @@ you may also set SingleGausses=T than components of the mixture in blue will be 
 
 \author{Michael Thrun}
 
-\seealso{\code{\link{BayesDecisionBoundaries}},\code{\link{PlotGaussMixesAndBoundaries}}}
+\seealso{\code{\link{BayesDecisionBoundaries}},\code{\link{PlotMixtures}}}
 
 \keyword{Bayes}
 \keyword{Boundaries}

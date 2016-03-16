@@ -126,7 +126,7 @@ if(AnzBins<10)   AnzRepetitions = 5000
 
 RandGMMDataDiff = matrix(0,AnzBins,AnzRepetitions)
 for(i in 1:AnzRepetitions){
-  R = randomLogGMM(Means,SDs,Weights,IsLogDistribution,AnzData)
+  R = RandomLogGMM(Means,SDs,Weights,IsLogDistribution,AnzData)
   #BinLimits = c(0,BinLimits,max(abs(R)))
   RandNrInBin = hist(Re(abs(R)),c(0,BinLimits,max(abs(R))),plot=F)$counts  # R's schnelle Funktion benutzen
   #BinLimits = BinLimits[2:(length(BinLimits)-1)]
@@ -226,8 +226,8 @@ if(PlotIt ==1){
   #subplot(2,2,4)
   Xlimits = c(min(Data,na.rm=TRUE),max(Data,na.rm=TRUE))
   #PDEplot(Data,xlim=Xlimits,ylim=Ylimits,defaultAxes=FALSE)
-  paretoRadius<-paretoRadiusForGMM(Data)
-  pdeVal        <- paretoDensityEstimationForGMM(Data,paretoRadius,NULL)
+  paretoRadius<-ParetoRadius(Data)
+  pdeVal        <- ParetoDensityEstimation(Data,paretoRadius,NULL)
   paretoDensity <- pdeVal$paretoDensity
   Ylimits = c(min(paretoDensity,na.rm=TRUE),max(paretoDensity,na.rm=TRUE))
   plot(pdeVal$kernels,paretoDensity,typ='l',col="blue",xlim = Xlimits, ylim = Ylimits, xlab = VarName, ylab = '',axes=FALSE,xaxs='i',yaxs='i') 
@@ -235,7 +235,7 @@ if(PlotIt ==1){
 
   #hold on; 
   par(new=TRUE)
-  PlotGaussianMixtures(Data,Means,SDs,Weights=Weights,IsLogDistribution=IsLogDistribution,xlim=Xlimits,ylim=Ylimits,axes=FALSE,xlab="",ylab="",SingleGausses=T,xaxs='i',yaxs='i',MixtureColor='black', SingleColor = 'green')
+  PlotMixtures(Data,Means,SDs,Weights=Weights,IsLogDistribution=IsLogDistribution,xlim=Xlimits,ylim=Ylimits,axes=FALSE,xlab="",ylab="",SingleGausses=T,xaxs='i',yaxs='i',MixtureColor='black', SingleColor = 'green')
   for (i in 1:length(BinLimits)){ 
     points(c(BinLimits[i],BinLimits[i]),ylim,type='l',lwd=1,col='magenta');
     par(new = TRUE);

@@ -1,5 +1,5 @@
-Intersect2Mixes <- function(Mean1,SD1,Weight1,Mean2,SD2,Weight2,IsLogDistribution = c(FALSE,FALSE),MinData,MaxData){
-  #  [CutX,CutY] = Intersect2Mixes(Mean1,SD1,Weight1,Mean2,SD2,Weight2,IsLogDistribution);
+Intersect2Mixtures <- function(Mean1,SD1,Weight1,Mean2,SD2,Weight2,IsLogDistribution = c(FALSE,FALSE),MinData,MaxData){
+  #  [CutX,CutY] = Intersect2Mixtures(Mean1,SD1,Weight1,Mean2,SD2,Weight2,IsLogDistribution);
   # INPUT
   # Mean1,SD1,Weight1,Mean2,SD2,Weight2        parameters of the gaussians
   # OPTIONAL 
