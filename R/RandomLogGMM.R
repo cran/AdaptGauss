@@ -20,6 +20,15 @@ RandomLogGMM=function(Means,SDs,Weights,IsLogDistribution,TotalNoPoints=1000){
   AnzPoints = round(Weights*TotalNoPoints*1.1)
   # Verteilung der Mischungen  erzeugen
   Mix = c() # init
+  if(missing(Means)){
+    stop('Means are missing.')
+  }
+  if(is.null(Means)){
+    stop('Means are NULL.')
+  }
+  if(missing(IsLogDistribution))
+    IsLogDistribution=Means*0
+  
   for(d in 1:L){
     if(IsLogDistribution[d]==1){
       # Mixi = symlogrnd(Means[d],SDs[d],AnzPoints[d],1)
@@ -42,7 +51,7 @@ RandomLogGMM=function(Means,SDs,Weights,IsLogDistribution,TotalNoPoints=1000){
   }  # for d
   # hier enthaelt Mix die der Vereilung entsprechende Punkte  
   # Dureinanderwuerfeln und auf gewuenschte Anzahl bringen
-  Ind = sample(c(1:TotalNoPoints),TotalNoPoints)
+  Ind = sample(c(1:sum(AnzPoints)),TotalNoPoints)
   GMM=Mix[Ind]
   return(GMM)  
 }

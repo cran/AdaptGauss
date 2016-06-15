@@ -13,7 +13,6 @@ ParetoRadius <- function(Data ,maximumNrSamples = 1000, plotDistancePercentiles 
 # PeratoRadius				the paret radius
 
 
-
 #require('dbt.general')
 
 	Data <- as.matrix(Data)
@@ -53,7 +52,7 @@ ParetoRadius <- function(Data ,maximumNrSamples = 1000, plotDistancePercentiles 
 	rm(size)
    	#Dist <- triuvec(dd)	# anneinandergereiht als vektor einschliesslich diagonalen (dist=0)
 	
-	sdist <- sort(Dist)
+	sdist <- sort(na.last=T,Dist)
 
     sdl <- length(sdist)
    
@@ -67,7 +66,7 @@ ParetoRadius <- function(Data ,maximumNrSamples = 1000, plotDistancePercentiles 
    # pzt <- percentiles(nzdist)
    x=nzdist
 y = c(1:100)
-ss<-sort(x)
+ss<-sort(na.last=T,x)
 n<-length(x)
 i<-n/100
 index<-t(seq(i,n,i))
@@ -87,7 +86,7 @@ rm(p)
 rm(i)
 #MT: Korrektur ist nicht dasselbe, wieso?
 # dd=pdist(sampleData,method="euclidean") #Pairwise distance between observations.
-# Dist=sort(squareform(dd)) 
+# Dist=sort(na.last=T,squareform(dd)) 
 # 
 # # selction of ParetoRadius
 # nzdist <- percentiles(Dist)  
@@ -111,5 +110,10 @@ rm(i)
 if (nData>1024){
   paretoRadius = paretoRadius * 4 /(nData^0.2);
 }
+if(is.na(paretoRadius))
+  stop('Pareto Radius could not be calculated. (NA value)')
+if(is.nan(paretoRadius))
+  stop('Pareto Radius could not be calculated. (NaN value)')
+    
 	return(paretoRadius)
 }

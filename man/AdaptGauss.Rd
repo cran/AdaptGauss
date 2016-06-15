@@ -52,9 +52,10 @@ List with
   
  }
  \references{
-Alfred Ultsch, Michael C. Thrun, Onno Hansen-Goos, Joern Loetsch Identification of molecular fingerprints in heat pain thresholds by use of an interactive mixture model toolbox (AdaptGauss), IJMS 2015.
+Ultsch, A., Thrun, M.C., Hansen-Goos, O., Loetsch, J.: Identification of Molecular Fingerprints in Human Heat Pain Thresholds by Use of an Interactive Mixture Model R Toolbox(AdaptGauss), International Journal of Molecular Sciences, doi:10.3390/ijms161025897, 2015.
 
-Thrun M.C.,Ultsch, A., Models of Income Distributions for Knowledge Discovery, European Conference on Data Analysis, DOI 10.13140/RG.2.1.4463.0244, Colchester 2015.
+
+Thrun M.C., Ultsch, A.: Models of Income Distributions for Knowledge Discovery, European Conference on Data Analysis, DOI 10.13140/RG.2.1.4463.0244, Colchester 2015.
 }
  
 \keyword{GMM}

@@ -23,6 +23,8 @@ List with
   \item{LogPDF}{=log(PDFmixture)}
   \item{PDFmixture}{die Probability density function for each point}
 }
-
+ \references{
+Pattern Recogintion and Machine Learning, C.M. Bishop, 2006, isbn: ISBN-13: 978-0387-31073-2, p. 433 (9.14)
+}
 \author{Alfred Ultsch, Catharina Lippmann}
 

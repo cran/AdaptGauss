@@ -178,7 +178,9 @@ for (t in 1:MaxNumberofIterations){ # update EM Parameters
       EMweights[1]  <- 1
       EMmean[1]  <-  meanrobust(Data)
       EMsdev[1]  <-  stdrobust(Data)
-      output <- list(mean=EMmean,sdev=EMsdev,weight=EMweights)
+      # output <- list(mean=EMmean,sdev=EMsdev,weight=EMweights)
+      output <- list(Means=EMmean,SDs=EMsdev,Weights=EMweights)         # edited: OHG 05.2016
+      warning("EM: no right solution found --> give up search & return robust values")
       return(output)
       break
     }

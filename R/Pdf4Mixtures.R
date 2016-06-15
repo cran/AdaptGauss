@@ -75,7 +75,7 @@ symlognpdf <- function(Data,M,S){
     PDF[,g] =  PDF4modes[,g] * Weights[g] 
 
   if(PlotIt){
-    X=sort(Data) 
+    X=sort(na.last=T,Data) 
     Sind=order(Data)
     plot(X,GaussMixture[Sind],type='l',xlim=c(X[1],X[length(X)]),ylab='pdf (Superposition of Gaussians)',xlab='Data')
   }

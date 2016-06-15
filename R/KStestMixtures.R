@@ -1,4 +1,4 @@
-KStestMixtures=function(Data,Means,SDs,Weights,IsLogDistribution=Means*0,PlotIt=FALSE,UpperLimit=max(Data,na.rm=TRUE)){
+KStestMixtures=function(Data,Means,SDs,Weights,IsLogDistribution=Means*0,PlotIt=FALSE,UpperLimit=max(Data,na.rm=TRUE),Silent=T){
 # res= KStestMixtures(Data,Means,SDs,Weights,IsLogDistribution,PlotIt,UpperLimit)
 # Kolmogorov-Smirnov Test Data vs a given Gauss Mixture Model
 #
@@ -13,7 +13,7 @@ KStestMixtures=function(Data,Means,SDs,Weights,IsLogDistribution=Means*0,PlotIt=
 #                                  default == 0*(1:L)'
 # PlotIt                           do a Plot of the compared cdf's and the KS-test distribution (Diff)
 # UpperLimit                       test only for Data <= UpperLimit, Default = max(Data) i.e all Data.
-#
+# Silent                           Shows progress of computation by points
 # OUTPUT
 # PvalueKS                         Pvalue of a suiting Kolmogorov Smirnov Test, PvalueKS==0 if PvalueKS<0.001
 # DataKernels,DataCDF              such that plot(DataKernels,DataCDF) gives the cdf(Data)
@@ -71,26 +71,62 @@ for(i in c(1:AnzRepetitions)){
    #RandCDF =  interp1(RandKernels,RandCDF,DataKernels, 'linear') #matlab
    RandCDF = approx(RandKernels,RandCDF,DataKernels, 'linear')$y  # den MaxDiff in cdf(Diff) lokalisieren
    RandGMMDataDiff[i] = max(abs(CDFGaussMixture-RandCDF),na.rm=TRUE)
+   if(!Silent){
+     if(Sys.info()['sysname'] == 'Windows'){
+       if(i==1)
+          pb <- winProgressBar(title = "progress bar", min = 0,
+                                max = AnzRepetitions, width = 300)
+       setWinProgressBar(pb, i, title=paste( round(i/AnzRepetitions*100, 0),"% done"))
+       if(i==AnzRepetitions) close(pb)
+     }else{
+       if(i %%10==0){
+         cat('.')
+       }
+     }                                      
+   }
 }# for i
 AllDiff =  RandGMMDataDiff                     # die Verteilung aller Differenzen
-#[AllDiffCDF,AllDiffKenels] =  ecdfUnique(AllDiff);  # cdf(Diff) #matlab
-dummy <- ecdf(AllDiff) # cdf(AllDiff)
-AllDiffCDF <- c(0,get("y", envir = environment(dummy)))
-AllDiffKernels <- c(knots(dummy)[1],knots(dummy))#CDFuniq# cdf(Data)
-
+#matlab
+#[AllDiffCDF,AllDiffKenels] =  ecdfUnique(AllDiff);  # cdf(Diff)
+#R
+dummy <- ecdf(AllDiff) # cdf(AllDiff) ##Berechnet eine Funktion
+# AllDiffCDF <- c(0,get("y", envir = environment(dummy)))
+# AllDiffKernels <- c(knots(dummy)[1],knots(dummy))#CDFuniq# cdf(Data)
+##Extrahiert aus der Funktion die x und y Werte
+AllDiffCDF=environment(dummy)$y
+AllDiffKernels=environment(dummy)$x
 #matlab
 #MaxDiffCDFwert = interp1([0;AllDiffKenels],[0;AllDiffCDF],MaxDiff, 'linear');  # den MaxDiff in cdf(Diff) lokalisieren
-MaxDiffCDFwert = approx(rbind(0,unname(AllDiffKernels)),rbind(0,unname(AllDiffCDF)),MaxDiff, 'linear')$y;  # den MaxDiff in cdf(Diff) lokalisieren
+#R
+MaxDiffCDFwert = approx(rbind(0,unname(AllDiffKernels)),rbind(0,unname(AllDiffCDF)),xout=MaxDiff, 'linear')$y  # den MaxDiff in cdf(Diff) lokalisieren
+if(is.na(MaxDiffCDFwert)){ ##Wenn nicht approximierbar
+  if(MaxDiff>max(AllDiffKernels,na.rm=T)){#Wenn Ursache daran liegt, das kein x-werte gefunden werden kann (zu weit nach rechts in der ecdf)
+    MaxDiffCDFwert=1
+    PvalueKS=MaxDiffCDFwert
+  }else if(MaxDiff<min(AllDiffKernels,na.rm=T)){#Wenn Ursache daran liegt, das kein x-werte gefunden werden kann (zu weit nach rechts in der ecdf)
+    MaxDiffCDFwert=0
+    PvalueKS=MaxDiffCDFwert
+  }else{
+    warning('Pvalue could not be computed, something went wrong')
+    PvalueKS=NaN
+  }
+}else{ #Standardfall
+  PvalueKS = MaxDiffCDFwert                        # P- value fuer KS-test ausrechnen
+  PvalueKS = round(PvalueKS,3)                     # runden auf 3 gueltige stellen
+  
+} 
+  
+  
 
-PvalueKS = MaxDiffCDFwert                        # P- value fuer KS-test ausrechnen
-PvalueKS = round(PvalueKS,3)                     # runden auf 3 gueltige stellen
 
+Controls=list(MaxDiffCDFwert=MaxDiffCDFwert,AllDiffKernels=AllDiffKernels,AllDiffCDF=AllDiffCDF,AllDiff=AllDiff)
 
 if(PlotIt ==1){
+  tryCatch({
   par.defaults <- par(no.readonly=TRUE)
   par(mfrow = c(2,2))
 
-  xlim=c(min(DataKernels), max(DataKernels))
+  xlim=c(min(DataKernels,na.rm = T), max(DataKernels,na.rm = T))
   #ylim=c(min(min(DataCDF,na.rm = TRUE),min(CDFGaussMixture,na.rm = TRUE)),max(max(DataCDF,na.rm = TRUE),max(CDFGaussMixture,na.rm = TRUE)))
   ylim=c(0,1)
   plot(DataKernels,DataCDF,col='blue',xlim=xlim,ylim=ylim,xlab="",ylab="",axes=FALSE)
@@ -104,29 +140,37 @@ if(PlotIt ==1){
   title('KS-test: comparison CDF(GMM) vs CDF(Data)',xlab='Data',ylab='red =CDF(GMM), blue=CDF(Data)');
   
   #     subplot(2,2,2);   # hier die fraglichen PDFs zeichnen
-  PlotMixtures(Data,Means,SDs,Weights,IsLogDistribution=IsLogDistribution,xlim=xlim,ylim=ylim,xlab='',ylab='',SingleGausses = T,SingleColor='magenta',MixtureColor='blue')
+  PlotMixtures(Data,Means,SDs,Weights,IsLogDistribution=IsLogDistribution,xlim=xlim,xlab='',ylab='',SingleGausses = T,SingleColor='magenta',MixtureColor='blue')
   title(paste0('max(Diff) at: ',KernelMaxDiff),xlab='Data',ylab='pdf(GMM), red= pdf(Data)')
   abline(v=KernelMaxDiff,col='green')
 #     subplot(2,2,3);
   		pareto_radius2<-ParetoRadius(AllDiff) 
 			pdeVal2        <- ParetoDensityEstimation(AllDiff,pareto_radius2)
-			xlim=c(min(MaxDiff*0.90,pdeVal2$kernels),max(pdeVal2$kernels))
+			xlim=c(min(MaxDiff*0.90,pdeVal2$kernels,na.rm = T),max(pdeVal2$kernels,na.rm = T))
+			ylim=c(0,1.05*max(pdeVal2$paretoDensity,na.rm = T))
 			plot(pdeVal2$kernels,pdeVal2$paretoDensity,type='l',xaxs='i',
-			yaxs='i',xlab='MaxDiff, mag = max(Diff)',ylab='pdf(KS-MaxDiff)',main='KS-Distribution of MaxDiff',xlim=xlim,col='blue') 
+			yaxs='i',xlab='MaxDiff, mag = max(Diff)',ylab='pdf(KS-MaxDiff)',main='KS-Distribution of MaxDiff',xlim=xlim,col='blue',ylim=ylim) 
       abline(v=MaxDiff,col='magenta')
       box()
 #     subplot(2,2,4);
-      xlim=c(min(MaxDiff*0.90,AllDiffKernels),max(AllDiffKernels))
-      ylim=c(min(MaxDiffCDFwert*0.90,AllDiffCDF),max(AllDiffCDF))
-      plot(AllDiffKernels,AllDiffCDF,type='p',ylab='cdf(KS-MaxDiff)',xlab='Diff, mag = max(Diff)',main=   paste0('Pvalue: ',PvalueKS*100,' [#]'),ylim=ylim,xlim=xlim,col='blue')
+      xlim=c(min(MaxDiff*0.90,AllDiffKernels,na.rm = T),max(AllDiffKernels,na.rm = T))
+      ylim=c(min(MaxDiffCDFwert*0.90,AllDiffCDF,na.rm = T),max(AllDiffCDF,na.rm = T))
+      tryCatch({
+        plot(AllDiffKernels,AllDiffCDF,type='p',ylab='cdf(KS-MaxDiff)',xlab='Diff, mag = max(Diff)',main=   paste0('Pvalue: ',PvalueKS*100,' [#]'),ylim=ylim,xlim=xlim,col='blue')
+      },er=function(ex){
+        plot(AllDiffKernels,AllDiffCDF,type='p',ylab='cdf(KS-MaxDiff)',xlab='Diff, mag = max(Diff)',main=   paste0('Pvalue: ',PvalueKS*100,' [#]'),col='blue')
+      })
       abline(v=MaxDiff,col='magenta')
       #abline(a=c(MaxDiffCDFwert,MaxDiffCDFwert),b=c(0,MaxDiff))
       abline(h=MaxDiffCDFwert,col='magenta')
       box()
       par(par.defaults)
+  },er=function(ex){
+    return(list(PvalueKS=PvalueKS,DataKernels=DataKernels,DataCDF=DataCDF,CDFGaussMixture=CDFGaussMixture,Controls))
+  })
 } #if PlotIt ==1
     
-return(list(PvalueKS=PvalueKS,DataKernels=DataKernels,DataCDF=DataCDF,CDFGaussMixture=CDFGaussMixture))
+return(list(PvalueKS=PvalueKS,DataKernels=DataKernels,DataCDF=DataCDF,CDFGaussMixture=CDFGaussMixture,Controls))
 }
 
 

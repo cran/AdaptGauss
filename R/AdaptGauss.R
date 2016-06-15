@@ -1,4 +1,4 @@
-AdaptGauss = function(Data,Means=NaN,SDs=NaN,Weights=NaN,ParetoRadius=NaN,LB=NaN,HB=NaN,ListOfAdaptGauss,fast=TRUE){
+AdaptGauss = function(Data,Means=NaN,SDs=NaN,Weights=NaN,ParetoRadius=NaN,LB=NaN,HB=NaN,ListOfAdaptGauss,fast=T){
 #    Out=AdaptGauss2(Data,Means,SDs,Weights,ParetoRadius,LB,HB);
 #    adapt interactively a Gaussians Mixture Model GMM to the empirical PDF of the data such that N(M,S)*W is a  model for Data
 #   
@@ -524,6 +524,7 @@ if(!missing(ListOfAdaptGauss)){
         GMSave <<- GM
         GSSave <<- GS
         GWSave <<- GW
+        
         numGaussSave <<- numGauss 
         if (input$expMax>0){
           print("Expectation Maximation")
@@ -532,6 +533,7 @@ if(!missing(ListOfAdaptGauss)){
           GS <<- Var$SDs
           GW <<- Var$Weights
         }
+
         # L?sche Gauss mit Weight==0
         for (i in length(GW):1){
           if (GW[i]==0){

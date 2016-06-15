@@ -33,7 +33,7 @@ if(length(IsLogDistribution)!=L){
 }
 # sortieren nach Means
 Sind = order(Means)
-Means = sort(Means)
+Means = sort(na.last=T,Means)
 SDs = SDs[Sind]
 Weights = Weights[Sind]
 IsLogDistribution <- IsLogDistribution[Sind]

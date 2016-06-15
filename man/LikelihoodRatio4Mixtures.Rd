@@ -27,5 +27,5 @@ List with
   \item{OneLogLikelihood}{log likelihood of GMM One}
 }
 
-\author{Prof. Alfred Ultsch,Michael Thrun, Catharina Lippmann}
+\author{Alfred Ultsch, Michael Thrun, Catharina Lippmann}
 

@@ -1,5 +1,8 @@
-Bayes4Mixtures <- function(Data, Means, SDs, Weights, IsLogDistribution = 0*Means, PlotIt = FALSE, CorrectBorders = FALSE){
+Bayes4Mixtures <- function(Data, Means, SDs, Weights, IsLogDistribution = 0*Means, PlotIt = FALSE, CorrectBorders = FALSE,Color=NULL,xlab='Data',lwd=4){
 # V = Bayes4Mixtures(Data, Means, SDs, Weights, IsLogDistribution, PlotIt, CorrectBorders)
+# Posteriors         = V$Posteriors(1:N,1:C)      #    Vektor der Posteriors      korrespondierend zu Data
+# NormalizationFactor= V$NormalizationFactor(1:N) #    Nenner des Bayes Theorems  korrespondierend zu Data
+#
 # INPUT
 # Data(1:N)            vector of data,  may contain NaN
 # Means(1:C),SDs(1:C),Weights(1:C) parameters of the Gaussians (Mean, StdDeviation, Weight)
@@ -10,9 +13,8 @@ Bayes4Mixtures <- function(Data, Means, SDs, Weights, IsLogDistribution = 0*Mean
 # CorrectBorders      ==TRUE Daten an den Grenzen werden den Randverteilungen zugeordnet
 #                    (default ==0) d.h. ganz gewoehnlicher Bayes mit allen seinen Problemen
 # OUTPUT
-# V	List of 2
-# Posteriors(1:N,1:C)          Vektor der Posteriors      korrespondierend zu Data
-# NormalizationFactor(1:N)     Nenner des Bayes Theorems  korrespondierend zu Data
+# Posteriors         = V$Posteriors(1:N,1:C)      #    Vektor der Posteriors      korrespondierend zu Data
+# NormalizationFactor= V$NormalizationFactor(1:N) #    Nenner des Bayes Theorems  korrespondierend zu Data
 # 
 # 
 # AUTHOR: CL
@@ -86,8 +88,11 @@ NormalizationFactor <- NormalizationFactor[UNsortInd];
 
 ## MT: Neu gemacht
 if(PlotIt==TRUE){
-	color <- rainbow(AnzMixtures)
-  xlim=c(min(Data),max(Data))
+  if(is.null(Color))
+	  color <- rainbow(AnzMixtures)
+  else
+    color=Color
+  xlim=c(min(Data,na.rm=T),max(Data,na.rm=T))
   ylim=c(0,1.05)
 	plot.new()
 	par(xaxs='i')
@@ -97,18 +102,18 @@ if(PlotIt==TRUE){
   if(CorrectBorders){
 
     for(i in 1:AnzMixtures){
-      points(Data[ind], Posteriors[ind,i], col = color[i],type='l',lwd=2)
+      points(Data[ind], Posteriors[ind,i], col = color[i],type='l',lwd=lwd)
     }#end for(i in 2:AnzMixtures)   
   }else{
 	for(i in 1:AnzMixtures){
-		points(Data[ind], Posteriors[ind,i], col = color[i],type='l',lwd=2)
+		points(Data[ind], Posteriors[ind,i], col = color[i],type='l',lwd=lwd)
 	}#end for(i in 2:AnzMixtures)
   }
 }#end if(PlotIt==TRUE)
 axis(1,xlim=xlim,col="black",las=1) #x-Achse
 axis(2,ylim=ylim,col="black",las=1) #y-Achse
 #box() #Kasten um Graphen
-title(ylab='posteriori',xlab='Data')
+title(ylab='Posteriori',xlab=xlab)
 ##
 res <- list(Posteriors = Posteriors, NormalizationFactor=NormalizationFactor)
 return (res) 

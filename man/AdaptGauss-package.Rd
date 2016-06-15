@@ -18,7 +18,7 @@ The correct number of modes may be found with AIC or BIC.
  Maintainer: Michael Thrun <mthrun@mathematik.uni-marburg.de>
 }
 \references{
-Alfred Ultsch, Michael C. Thrun, Onno Hansen-Goos, Joern Loetsch Identification of molecular fingerprints in heat pain thresholds by use of an interactive mixture model toolbox (AdaptGauss), IJMS 2015.
+Ultsch, A., Thrun, M.C., Hansen-Goos, O., Loetsch, J.: Identification of Molecular Fingerprints in Human Heat Pain Thresholds by Use of an Interactive Mixture Model R Toolbox(AdaptGauss), International Journal of Molecular Sciences, doi:10.3390/ijms161025897, 2015.
 
 Duda, R.O., P.E. Hart, and D.G. Stork, Pattern classification. 2nd. Edition. New York, 2001, p 512 ff
 
@@ -26,7 +26,7 @@ Bishop, Christopher M. Pattern recognition and machine learning. springer, 2006,
 
 Ultsch, A.: Pareto density estimation: A density estimation for knowledge discover, in  Baier, D.; Werrnecke, K. D., (Eds), Innovations in classification, data science, and information systems, Proc Gfkl 2003, pp 91-100, Springer, Berlin, 2005. 
 
-Thrun M.C.,Ultsch, A., Models of Income Distributions for Knowledge Discovery, European Conference on Data Analysis, DOI 10.13140/RG.2.1.4463.0244, Colchester 2015.
+Thrun M.C., Ultsch, A.: Models of Income Distributions for Knowledge Discovery, European Conference on Data Analysis, DOI 10.13140/RG.2.1.4463.0244, Colchester 2015.
 }
 
 \keyword{Multimodal}

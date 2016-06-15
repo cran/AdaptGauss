@@ -34,7 +34,7 @@ if(length(IsLogDistribution)!=length(Means)){
   warning(paste('Length of Means',length(Means),'does not equal length of IsLogDistribution',length(IsLogDistribution),'Generating new IsLogDistribution'))  
   IsLogDistribution = rep(FALSE,length(Means))
 }
-X = sort(unique(Data)) # sort ascending and make sure of uniqueness
+X = sort(na.last=T,unique(Data)) # sort ascending and make sure of uniqueness
 AnzGaussians <- length(Means)
 #SingleGaussian <- matrix(0,length(X),AnzGaussians)
 #GaussMixture=X*0 # init
@@ -87,7 +87,7 @@ points(pdeVal$kernels,pdeVal$paretoDensity,type='l', xlim = xlim, ylim = ylim,co
 if(axes){
   axis(1,xlim=xlim,col="black",las=1) #x-Achse
   axis(2,ylim=ylim,col="black",las=1) #y-Achse
-  title(xlab=xlab,ylab=ylab)
+  title(xlab=xlab,ylab=ylab,main = 'GMM with AdaptGauss()')
   #box() #Kasten um Graphen
   #title(xlab=xlab,ylab=ylab)
 }
