@@ -1,5 +1,5 @@
-cb5daf08820ae5d9a76553fb1c8cab39 *DESCRIPTION
-6f915a82257083c4529378d8e054810e *NAMESPACE
+b88b86f1a284b0528dcc37f5aa282828 *DESCRIPTION
+8cac8aef53150f985fec7642274eae22 *NAMESPACE
 dfcde829b038776f195ae7217eaabf24 *R/AdaptGauss.R
 4e42a82f0a9a628e539e6db47c9bf511 *R/Bayes4Mixtures.R
 ed32e0b80ad8835c3bf0b3f54985fd9d *R/BayesDecisionBoundaries.R
@@ -9,7 +9,7 @@ ed32e0b80ad8835c3bf0b3f54985fd9d *R/BayesDecisionBoundaries.R
 c71aec899162726b2c946737b91a0f9c *R/EMGauss.R
 7e985088fdefbfd0dcf09310244966b4 *R/InformationCriteria4GMM.R
 69dae9d385931a19ea58b0e38ed440e6 *R/Intersect2Mixtures.R
-48a9724bcff9531f70f61573eca1024c *R/KStestMixtures.R
+7cb64a7f4d5e5d5a9dbf415cc4907d4b *R/KStestMixtures.R
 fbcc6a59cbcac392079ae12b9b65fbb9 *R/LikelihoodRatio4Mixtures.R
 3449657ea097e4f2e784317c24dfa30f *R/LogLikelihood4Mixtures.R
 87c332249ab98c41486a7ae7a76a50c7 *R/OptimalNoBins.R
