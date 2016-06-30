@@ -6,7 +6,7 @@ KStestMixtures=function(Data,Means,SDs,Weights,IsLogDistribution=Means*0,PlotIt=
 # Data(1:N)                        data points
 # Means(1:L,1)                     Means of Gaussians,  L ==  Number of Gaussians
 # SDs(1:L,1)                     estimated Gaussian Kernels = standard deviations
-# Weights(1:L,1)                   relative number of points in Gaussians (prior probabilities):
+# Weights(1:L,1)                   relative number of points in Gaussians (prior probabilities): 
 #
 # OPTIONAL
 # IsLogDistribution(1:L,1) oder 0  if IsLogDistribution(i)==1, then mixture is lognormal
@@ -25,9 +25,9 @@ KStestMixtures=function(Data,Means,SDs,Weights,IsLogDistribution=Means*0,PlotIt=
 #Hilfsfunktionen
 ################################
 
-################################
-################################
-#[DataCDF,DataKernels] = ecdfUnique(Data)
+################################  
+################################  
+#[DataCDF,DataKernels] = ecdfUnique(Data) 
 dummy <- ecdf(Data) # cdf(Diff)
 DataCDF <- c(0,get("y", envir = environment(dummy)))
 DataKernels <- c(knots(dummy)[1],knots(dummy))#CDFuniq# cdf(Data)
@@ -51,14 +51,14 @@ KernelMaxDiff   = DataKernels[MaxInd]         # wo steckt der groesste Unterschi
 DataCDFmaxDiff  = DataCDF[MaxInd]             # wo steckt der groesste Unterschied
 GMMCDFmaxDiff   = CDFGaussMixture[MaxInd]      # wo steckt der groesste Unterschied
 
-
-
+         
+             
 # Die Miller Funktion via Monte-Carlo errechnen
 AnzData =length(Data)
 AnzRepetitions = 1000
 if(AnzData<1000) AnzRepetitions = 2000
 if(AnzData<100)  AnzRepetitions = 5000
-
+    
 RandGMMDataDiff = matrix(0,AnzRepetitions,1)
 
 for(i in c(1:AnzRepetitions)){
@@ -72,17 +72,17 @@ for(i in c(1:AnzRepetitions)){
    RandCDF = approx(RandKernels,RandCDF,DataKernels, 'linear')$y  # den MaxDiff in cdf(Diff) lokalisieren
    RandGMMDataDiff[i] = max(abs(CDFGaussMixture-RandCDF),na.rm=TRUE)
    if(!Silent){
-     # if(Sys.info()['sysname'] == 'Windows'){
-     #   if(i==1)
-     #      pb <- winProgressBar(title = "progress bar", min = 0,
-     #                            max = AnzRepetitions, width = 300)
-     #   setWinProgressBar(pb, i, title=paste( round(i/AnzRepetitions*100, 0),"% done"))
-     #   if(i==AnzRepetitions) close(pb)
-     # }else{
+     #if(Sys.info()['sysname'] == 'Windows'){
+      # if(i==1)
+       #   pb <- winProgressBar(title = "progress bar", min = 0,
+     #                           max = AnzRepetitions, width = 300)
+     #  setWinProgressBar(pb, i, title=paste( round(i/AnzRepetitions*100, 0),"% done"))
+     #  if(i==AnzRepetitions) close(pb)
+    # }else{
        if(i %%10==0){
          cat('.')
        }
-     #}
+    # }                                      
    }
 }# for i
 AllDiff =  RandGMMDataDiff                     # die Verteilung aller Differenzen
@@ -113,10 +113,10 @@ if(is.na(MaxDiffCDFwert)){ ##Wenn nicht approximierbar
 }else{ #Standardfall
   PvalueKS = MaxDiffCDFwert                        # P- value fuer KS-test ausrechnen
   PvalueKS = round(PvalueKS,3)                     # runden auf 3 gueltige stellen
-
-}
-
-
+  
+} 
+  
+  
 
 
 Controls=list(MaxDiffCDFwert=MaxDiffCDFwert,AllDiffKernels=AllDiffKernels,AllDiffCDF=AllDiffCDF,AllDiff=AllDiff)
@@ -131,25 +131,25 @@ if(PlotIt ==1){
   ylim=c(0,1)
   plot(DataKernels,DataCDF,col='blue',xlim=xlim,ylim=ylim,xlab="",ylab="",axes=FALSE)
   points(DataKernels,CDFGaussMixture,col='red',type='l',lwd=2)
-
+  
   points(KernelMaxDiff,DataCDFmaxDiff,col='green',pch=1)
   points(KernelMaxDiff,GMMCDFmaxDiff,col='green',pch=1)
   abline(v=KernelMaxDiff,col='green')
   axis(1,xlim=xlim,col="black",las=1) #x-Achse
   axis(2,ylim=ylim,col="black",las=1) #y-Achse
   title('KS-test: comparison CDF(GMM) vs CDF(Data)',xlab='Data',ylab='red =CDF(GMM), blue=CDF(Data)');
-
+  
   #     subplot(2,2,2);   # hier die fraglichen PDFs zeichnen
   PlotMixtures(Data,Means,SDs,Weights,IsLogDistribution=IsLogDistribution,xlim=xlim,xlab='',ylab='',SingleGausses = T,SingleColor='magenta',MixtureColor='blue')
   title(paste0('max(Diff) at: ',KernelMaxDiff),xlab='Data',ylab='pdf(GMM), red= pdf(Data)')
   abline(v=KernelMaxDiff,col='green')
 #     subplot(2,2,3);
-  		pareto_radius2<-ParetoRadius(AllDiff)
+  		pareto_radius2<-ParetoRadius(AllDiff) 
 			pdeVal2        <- ParetoDensityEstimation(AllDiff,pareto_radius2)
 			xlim=c(min(MaxDiff*0.90,pdeVal2$kernels,na.rm = T),max(pdeVal2$kernels,na.rm = T))
 			ylim=c(0,1.05*max(pdeVal2$paretoDensity,na.rm = T))
 			plot(pdeVal2$kernels,pdeVal2$paretoDensity,type='l',xaxs='i',
-			yaxs='i',xlab='MaxDiff, mag = max(Diff)',ylab='pdf(KS-MaxDiff)',main='KS-Distribution of MaxDiff',xlim=xlim,col='blue',ylim=ylim)
+			yaxs='i',xlab='MaxDiff, mag = max(Diff)',ylab='pdf(KS-MaxDiff)',main='KS-Distribution of MaxDiff',xlim=xlim,col='blue',ylim=ylim) 
       abline(v=MaxDiff,col='magenta')
       box()
 #     subplot(2,2,4);
@@ -169,7 +169,7 @@ if(PlotIt ==1){
     return(list(PvalueKS=PvalueKS,DataKernels=DataKernels,DataCDF=DataCDF,CDFGaussMixture=CDFGaussMixture,Controls))
   })
 } #if PlotIt ==1
-
+    
 return(list(PvalueKS=PvalueKS,DataKernels=DataKernels,DataCDF=DataCDF,CDFGaussMixture=CDFGaussMixture,Controls))
 }
 

@@ -14,7 +14,17 @@ ParetoRadius <- function(Data ,maximumNrSamples = 1000, plotDistancePercentiles 
 
 
 #require('dbt.general')
-
+  ntemp=sum(is.nan(Data))
+  if(ntemp>0){
+    warning('Data has NaN values, Pareto Radius may not be calculated.')
+  }
+  ntemp2=sum(is.na(Data))
+  if(ntemp2>ntemp)
+    warning('Data has NA values, Pareto Radius may not be calculated.')
+  ntemp3=sum(is.infinite(Data))
+  if(ntemp3>0)
+    warning('Data has infinite valuues, Pareto Radius may not be calculated.')
+  
 	Data <- as.matrix(Data)
 
 	uxPercentiless <- 18 # % Koordinaten des Punktes mit minimalem unrealisiertem Potential (->Ultsch2001)
@@ -92,12 +102,21 @@ rm(i)
 # nzdist <- percentiles(Dist)  
    
 	paretoRadius <- pzt[uxPercentiless]
-	
+
    if (paretoRadius == 0) {
-       paretoRadius <-  min(pzt[pzt>0]) # take the smallest nonzero
+     
+       paretoRadius <-  min(pzt[pzt>0],na.rm=T) # take the smallest nonzero
 	}
 
-
+	if(is.nan(paretoRadius))
+	  stop('Pareto Radius could not be calculated. (NaN value)')
+	
+	if(is.na(paretoRadius))
+	  stop('Pareto Radius could not be calculated. (NA value)')
+	
+	if(!is.finite(paretoRadius))
+	  stop('Pareto Radius could not be calculated. (infinite value)')
+	
 #    plot of distance distribution
 
 	if(plotDistancePercentiles){
@@ -110,10 +129,6 @@ rm(i)
 if (nData>1024){
   paretoRadius = paretoRadius * 4 /(nData^0.2);
 }
-if(is.na(paretoRadius))
-  stop('Pareto Radius could not be calculated. (NA value)')
-if(is.nan(paretoRadius))
-  stop('Pareto Radius could not be calculated. (NaN value)')
     
 	return(paretoRadius)
 }

@@ -26,10 +26,7 @@ Pareto Density Estimation (PDE) is a method for the estimation of probability de
 }
 \examples{
 			data = c(rnorm(1000),rnorm(2000)+2,rnorm(1000)*2-1)
-			# Optional, if not given ParetoDensityEstimation() 
-			# calls ParetoRadius()
-			pareto_radius<-ParetoRadius(data) 
-			pdeVal        <- ParetoDensityEstimation(data,pareto_radius)
+			pdeVal        <- ParetoDensityEstimation(data)
 			plot(pdeVal$kernels,pdeVal$paretoDensity,type='l',xaxs='i',
 			yaxs='i',xlab='Data',ylab='PDE') 
   			

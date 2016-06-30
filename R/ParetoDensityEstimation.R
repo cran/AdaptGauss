@@ -56,21 +56,24 @@ if(!length(variables)){ #MT: Falls statt Matrix Vektor uebergeben wird
 return(list(elements=elements,noNaNInd=noNaNInd,nrElements=nrElements))
 }
 ###############################################
-
-
-if(missing(paretoRadius))
-  paretoRadius=ParetoRadius(Data)
-
-if(is.null(paretoRadius))
-  paretoRadius=ParetoRadius(Data)
-
-if(is.na(paretoRadius))
-  paretoRadius=ParetoRadius(Data)
-
-if(paretoRadius==0 || length(paretoRadius)==0)
-	paretoRadius=ParetoRadius(Data)
 	
 Data <- noNaN_hlp(Data)$elements
+if(length(Data)<10){
+  warning('Less than 10 datapoints given, ParetoRadius potientially cannot be calcualted.')
+}
+  
+if(missing(paretoRadius)){
+  paretoRadius=ParetoRadius(Data)
+}else if(is.null(paretoRadius)){
+  paretoRadius=ParetoRadius(Data)
+}else if(is.na(paretoRadius)){
+  paretoRadius=ParetoRadius(Data)
+}else if(paretoRadius==0 || length(paretoRadius)==0){
+	paretoRadius=ParetoRadius(Data)
+}else{
+}
+
+
 Data <- as.matrix(Data)
 
 

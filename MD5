@@ -1,4 +1,4 @@
-b88b86f1a284b0528dcc37f5aa282828 *DESCRIPTION
+895ea7bd934d363003140a8e15cc4e07 *DESCRIPTION
 8cac8aef53150f985fec7642274eae22 *NAMESPACE
 dfcde829b038776f195ae7217eaabf24 *R/AdaptGauss.R
 4e42a82f0a9a628e539e6db47c9bf511 *R/Bayes4Mixtures.R
@@ -9,12 +9,12 @@ ed32e0b80ad8835c3bf0b3f54985fd9d *R/BayesDecisionBoundaries.R
 c71aec899162726b2c946737b91a0f9c *R/EMGauss.R
 7e985088fdefbfd0dcf09310244966b4 *R/InformationCriteria4GMM.R
 69dae9d385931a19ea58b0e38ed440e6 *R/Intersect2Mixtures.R
-7cb64a7f4d5e5d5a9dbf415cc4907d4b *R/KStestMixtures.R
+b586033d5327d12fb3759ae6b92d0af0 *R/KStestMixtures.R
 fbcc6a59cbcac392079ae12b9b65fbb9 *R/LikelihoodRatio4Mixtures.R
 3449657ea097e4f2e784317c24dfa30f *R/LogLikelihood4Mixtures.R
 87c332249ab98c41486a7ae7a76a50c7 *R/OptimalNoBins.R
-52277e6b74c0a03df631301a1f4a229b *R/ParetoDensityEstimation.R
-c74b31e3b063cd3b87c1cfb9594286f3 *R/ParetoRadius.R
+b0096ec36ef63a212e3647548650da13 *R/ParetoDensityEstimation.R
+ce1e90d90f82f1b8ca315d28a193213f *R/ParetoRadius.R
 83191d719a3b07469df2ffb97ec97df1 *R/Pdf4Mixtures.R
 fbd4800c349fa6135ef61084c5706b78 *R/PlotMixtures.R
 ff7ed8f72e0855114711cb82a0a1331e *R/PlotMixturesAndBoundaries.R
@@ -25,7 +25,7 @@ d949ad5697ccc3f42728a271c3e02bf4 *man/AdaptGauss.Rd
 eb124c01ae36978cc1e742dd4b60d3db *man/Bayes4Mixtures.Rd
 b7a5bc207be48c085359afaa37af1c7b *man/BayesDecisionBoundaries.Rd
 dee92e1ed761c75531ae6eef0d8372ab *man/CDFMixtures.Rd
-799593914d688cc5b0a54c0a80a38e67 *man/Chi2testMixtures.Rd
+bcbe9beba6f27f580b24c8a701a739e4 *man/Chi2testMixtures.Rd
 d43350ea093239326013b15c19ce955e *man/ClassifyByDecisionBoundaries.Rd
 87c8dcf6646c3ad4a4dcef6edfcf7a7b *man/EMGauss.Rd
 9499068cfef4b24b58b7f28be65dd661 *man/InformationCriteria4GMM.Rd
@@ -34,8 +34,8 @@ d93f873421261236622f6ad0acea4ac9 *man/Intersect2Mixtures.Rd
 a78d2426ffd2b912e5de8b01e261a425 *man/LikelihoodRatio4Mixtures.Rd
 e0dd482ac5930f3dbe1663ef1a1db872 *man/LogLikelihood4Mixtures.Rd
 21d9dcad727891daba10cccdbcf7a756 *man/OptimalNoBins.Rd
-f5b76c468cf54cc14cb4bcb050af7b29 *man/ParetoDensityEstimation.Rd
-f8ec01ff4cc8717b5ba8db5a9bd54b0f *man/ParetoRadius.Rd
+ab9cb3160d73ef407fb60e3defca8c24 *man/ParetoDensityEstimation.Rd
+50e4de4b9c45aff05bb7723d021967ad *man/ParetoRadius.Rd
 77a9d5fa1a5cb7a05fe6005b5ebc91ed *man/Pdf4Mixtures.Rd
 909005c34382e4f10e6bf38d1b6ad16d *man/PlotMixtures.Rd
 1786e6422147bab78efcd4ecfa29d692 *man/PlotMixturesAndBoundaries.Rd
