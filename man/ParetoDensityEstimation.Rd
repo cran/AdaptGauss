@@ -31,5 +31,5 @@ Pareto Density Estimation (PDE) is a method for the estimation of probability de
 			yaxs='i',xlab='Data',ylab='PDE') 
   			
 }
-\references{Ultsch, A.: Pareto density estimation: A density estimation for knowledge discover, in  Baier, D.; Werrnecke, K. D., (Eds), Innovations in classification, data science, and information systems, Proc Gfkl 2003, pp 91-100, Springer, Berlin, 2005.}
+\references{Ultsch, A.: Pareto density estimation: A density estimation for knowledge discovery, in  Baier, D.; Werrnecke, K. D., (Eds), Innovations in classification, data science, and information systems, Proc Gfkl 2003, pp 91-100, Springer, Berlin, 2005.}
 \seealso{\code{\link{ParetoRadius}}}

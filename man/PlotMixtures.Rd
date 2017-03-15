@@ -11,10 +11,7 @@
 	
 	Blue is the color of components of the mixture
 }
-\usage{
-PlotMixtures(Data, Means, SDs, Weights,IsLogDistribution, SingleColor, 
-MixtureColor,DataColor, SingleGausses,axes, xlab, ylab,xlim, ylim, ...)
-}
+
 
 \arguments{
       \item{Data}{vector (1:N) of data points}
@@ -25,12 +22,14 @@ MixtureColor,DataColor, SingleGausses,axes, xlab, ylab,xlim, ylim, ...)
   \item{SingleColor}{Optional,Color for line plot of all the single gaussians, default magenta}
   \item{MixtureColor}{Optional,Color of line lot for the mixture default red}
 	\item{DataColor}{Optional,Color of line plot for the data, default black}
+  \item{SingleGausses}{Optional, If TRUE, single gaussians are shown, default FALSE}
     \item{axes}{Optional,Default:TRUE with axis, see argument \code{axis} of \code{\link{plot}}}
-    \item{xlim}{Optional, see \code{\link{plot}}}
-    \item{ylim}{Optional, see \code{\link{plot}}}
     \item{xlab}{Optional, see \code{\link{plot}}}
 	 \item{ylab}{Optional, see \code{\link{plot}}}
-  \item{SingleGausses}{Optional, If TRUE, single gaussians are shown, default FALSE}
+	\item{xlim}{Optional, see \code{\link{plot}}}
+    \item{ylim}{Optional, see \code{\link{plot}}}
+    \item{ParetoRad}{Optional: Precalculated Pareto Radius to use}
+
   \item{...}{other plot arguments like xlim = c(1,10)}
   
 }

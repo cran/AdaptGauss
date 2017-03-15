@@ -1,4 +1,4 @@
-Chi2testMixtures <- function(Data,Means,SDs,Weights,IsLogDistribution = Means*0,PlotIt = 0,UpperLimit=max(Data,na.rm=TRUE),VarName='Data'){
+Chi2testMixtures <- function(Data,Means,SDs,Weights,IsLogDistribution = Means*0,PlotIt = 0,UpperLimit=max(Data,na.rm=TRUE),VarName='Data', MonteCarloSampling=T){
 # V=Chi2testMixtures(Data,Means,SDs,Weights,IsLogDistribution,PlotIt,UpperLimit)
 # V$Pvalue V$BinCenters V$ObsNrInBin V$ExpectedNrInBin
 #  chi-square test of Data vs a given Gauss Mixture Model
@@ -16,6 +16,7 @@ Chi2testMixtures <- function(Data,Means,SDs,Weights,IsLogDistribution = Means*0,
 # PlotIt                           do a Plot of the compared cdf's and the KS-test distribution (Diff)
 # UpperLimit                       test only for Data <= UpperLimit, Default = max(Data) i.e all Data.
 # VarName                          Variable Name for Plots
+# MonteCarloSampling               Should the Chi2 Distribution be sampled (instead of looked up in a table)
 # OUTP
 # Pvalue                           Pvalue of a suiting chi-square , Pvalue ==0 if Pvalue <0.001
 # BinCenters                       bin centers
@@ -28,6 +29,7 @@ Chi2testMixtures <- function(Data,Means,SDs,Weights,IsLogDistribution = Means*0,
 # uses  histopt_hlp,CDFMixtures,randomLogMix_hlp,PlotMixtures       matlab's histc(..)
 # Autor: RG 06/15
 #1.Editor: MT 08/2015 plotten, Fehlerabfang bei kleinen Datensaetzen
+#2.Editor: FL 12/16 moeglichkeit, chi2 dist. direkt in tabelle nachzuschlagen eingefuegt.
   
 par.defaults <- par(no.readonly=TRUE)
 if(length(IsLogDistribution) == 1 && IsLogDistribution == 0) 
@@ -86,6 +88,8 @@ xx = Re(xx)
 #xx =xx +eps(xx); #####eps!
 BinLimits = c(xx[1,1],xx[,2])                         # dies sind jetzt die Bin Grenzen
 
+#print(BinLimits)
+
 # # Nachrechnen: fuer diese Bin Grenzen mit histc schauen wieviele in die jeweilgen bins fallen
 # nn = histc(full(real(Data)),BinLimits);              % matlab' schnelle counting Funktion benutzen
 # # Combine last bin with next to last bin
@@ -123,30 +127,34 @@ AnzRepetitions = 1000;
 if(AnzBins<100)  AnzRepetitions = 2000
 if(AnzBins<10)   AnzRepetitions = 5000
 
-
-RandGMMDataDiff = matrix(0,AnzBins,AnzRepetitions)
-for(i in 1:AnzRepetitions){
-  R = RandomLogGMM(Means,SDs,Weights,IsLogDistribution,AnzData)
-  #BinLimits = c(0,BinLimits,max(abs(R)))
-  RandNrInBin = hist(Re(abs(R)),c(0,BinLimits,max(abs(R))),plot=F)$counts  # R's schnelle Funktion benutzen
-  #BinLimits = BinLimits[2:(length(BinLimits)-1)]
-  RandNrInBin[2] = RandNrInBin[1]+RandNrInBin[2]
-  RandNrInBin[length(RandNrInBin)-1] = RandNrInBin[length(RandNrInBin)-1]+RandNrInBin[length(RandNrInBin)]
-  RandNrInBin = RandNrInBin[3:length(RandNrInBin)-1]
-  AnzDiffRand =  RandNrInBin-ExpectedNrInBin
-  RandChi2Diffs = AnzDiffRand*0; # init
-  if(NumberOfData<DataSmall){
-    Ind = which(ExpectedNrInBin>=2, arr.ind=TRUE) #Bei Kleinen Datensetzen schranke runterstellen
-  }else{
-    Ind = which(ExpectedNrInBin>=10, arr.ind=TRUE) #  ObsNrInBin mindestens 10 sonst gelten die Werte als identisch => Diff ==0
+if(MonteCarloSampling){
+  RandGMMDataDiff = matrix(0,AnzBins,AnzRepetitions)
+  for(i in 1:AnzRepetitions){
+    R = RandomLogGMM(Means,SDs,Weights,IsLogDistribution,AnzData)
+    #BinLimits = c(0,BinLimits,max(abs(R)))
+    RandNrInBin = hist(Re(abs(R)),c(0,BinLimits,max(abs(R))),plot=F)$counts  # R's schnelle Funktion benutzen
+    #BinLimits = BinLimits[2:(length(BinLimits)-1)]
+    RandNrInBin[2] = RandNrInBin[1]+RandNrInBin[2]
+    RandNrInBin[length(RandNrInBin)-1] = RandNrInBin[length(RandNrInBin)-1]+RandNrInBin[length(RandNrInBin)]
+    RandNrInBin = RandNrInBin[3:length(RandNrInBin)-1]
+    AnzDiffRand =  RandNrInBin-ExpectedNrInBin
+    RandChi2Diffs = AnzDiffRand*0; # init
+    if(NumberOfData<DataSmall){
+      Ind = which(ExpectedNrInBin>=2, arr.ind=TRUE) #Bei Kleinen Datensetzen schranke runterstellen
+    }else{
+      Ind = which(ExpectedNrInBin>=10, arr.ind=TRUE) #  ObsNrInBin mindestens 10 sonst gelten die Werte als identisch => Diff ==0
+    }
+    RandChi2Diffs[Ind] = ( (RandNrInBin[Ind]-ExpectedNrInBin[Ind])^2)/ExpectedNrInBin[Ind]
+    RandGMMDataDiff[,i] = RandChi2Diffs;
   }
-  RandChi2Diffs[Ind] = ( (RandNrInBin[Ind]-ExpectedNrInBin[Ind])^2)/ExpectedNrInBin[Ind]
-  RandGMMDataDiff[,i] = RandChi2Diffs;
+  AllDiff =  colSums(RandGMMDataDiff);                # die Verteilung aller Differenzen
+  #[AllDiffCDF,AllDiffKernels] =  ecdfUnique(AllDiff); 
+  dummy <- ecdf(AllDiff) # cdf(Diff)
+}
+else{
+  dummy <- ecdf(rchisq(2000,length(BinCenters)-1)) # cdf(Diff)
 }
 
-AllDiff =  colSums(RandGMMDataDiff);                # die Verteilung aller Differenzen
-#[AllDiffCDF,AllDiffKernels] =  ecdfUnique(AllDiff); 
-dummy <- ecdf(AllDiff) # cdf(Diff)
 AllDiffCDF <- c(0,get("y", envir = environment(dummy)))
 AllDiffKernels <- c(knots(dummy)[1],knots(dummy))#CDFuniq
 
@@ -166,6 +174,7 @@ if (Chi2Value-AllDiffKernels[length(AllDiffKernels)] >1){ # Summe der Abweichung
 #Ch2cdfValue = interp1([0;AllDiffKernels],[0;AllDiffCDF],Chi2Value, 'linear');  #den MaxDiff in cdf(Diff) lokalisieren
   Ch2cdfValue = approx(rbind(0,unname(AllDiffKernels)),rbind(0,unname(AllDiffCDF)),Chi2Value, 'linear')$y;  # den MaxDiff in cdf(Diff) lokalisieren
 } # if (Chi2Value-AllDiffKernels(end)) >1 # der wert liegt zu weit rechts
+
 
 Pvalue = Ch2cdfValue                       # P- value fuer Chi sqare -test ausrechnen
 Pvalue = round(Pvalue,5)                   # runden auf  gueltige stellen
@@ -198,7 +207,7 @@ if(PlotIt ==1){
   #xlim=c(min(abs(Data),na.rm=TRUE),max(abs(Data),na.rm=TRUE))
   plot(BinCenters,Chi2Diffs,col='red',xlab="",ylab="",type='b',xlim=xlim)
   grid() 
-  #ax = axis;
+  #ax = axis; 
   #yaxis(0,max(2,ax(4)));
   for (i in 1:length(BinLimits)){ 
     points(c(BinLimits[i],BinLimits[i]),ylim,type='l',lwd=1,col='magenta')
@@ -220,11 +229,12 @@ if(PlotIt ==1){
   if (Pvalue==0){
     title(c('cdf(Chi2), Pvalue< 10e-4' ));
   }else{
-    title(c('cdf(Chi2), Pvalue=', paste(Pvalue) ))
+    title(c('cdf(Chi2), Pvalue=', paste(1-Pvalue) ))
   }
   
   #subplot(2,2,4)
   Xlimits = c(min(Data,na.rm=TRUE),max(Data,na.rm=TRUE))
+  
   #PDEplot(Data,xlim=Xlimits,ylim=Ylimits,defaultAxes=FALSE)
   paretoRadius<-ParetoRadius(Data)
   pdeVal        <- ParetoDensityEstimation(Data,paretoRadius,NULL)
@@ -235,7 +245,8 @@ if(PlotIt ==1){
 
   #hold on; 
   par(new=TRUE)
-  PlotMixtures(Data,Means,SDs,Weights=Weights,IsLogDistribution=IsLogDistribution,xlim=Xlimits,ylim=Ylimits,axes=FALSE,xlab="",ylab="",SingleGausses=T,xaxs='i',yaxs='i',MixtureColor='black', SingleColor = 'green')
+  PlotMixtures(Data,Means,SDs,Weights=Weights,IsLogDistribution=IsLogDistribution,xlim=Xlimits,ylim=Ylimits,
+               axes=T,xlab="",ylab="",SingleGausses=T,xaxs='i',yaxs='i',MixtureColor='black', SingleColor = 'green')
   for (i in 1:length(BinLimits)){ 
     points(c(BinLimits[i],BinLimits[i]),ylim,type='l',lwd=1,col='magenta');
     par(new = TRUE);
@@ -243,11 +254,14 @@ if(PlotIt ==1){
   #xaxis(min(BinLimits),max(BinLimits));
   title(paste0('black=pdf(GMM),green=pdf(',VarName,')'))
   axis(1,xlim=c(0,ceiling(max(Data,na.rm=TRUE))),col="black",las=1) #x-Achse
+  
   axis(2,ylim=c(0,2),col="black",las=1) #y-Achse
   #drawnow;
 }
 
 
 par(par.defaults)
-return(list(Pvalue=Pvalue,BinCenters=BinCenters,ObsNrInBin=ObsNrInBin,ExpectedNrInBin=ExpectedNrInBin,Chi2Value=Chi2Value))
+    #kleiner Pvalue: schlecht
+		#grosser pvalue: gut
+return(list(Pvalue=1-Pvalue,BinCenters=BinCenters,ObsNrInBin=ObsNrInBin,ExpectedNrInBin=ExpectedNrInBin,Chi2Value=Chi2Value))
 }

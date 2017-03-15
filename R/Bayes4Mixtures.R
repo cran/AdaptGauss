@@ -58,7 +58,7 @@ for(i in c(1:AnzMixtures)){
 }#end for(i in c(1:AnzMixtures))
 
 if(CorrectBorders == TRUE & (sum(IsLogDistribution)==0)){ # Randkorrektuuren anbringen
-	# Daten kleiner kleinstem Modus werden diesem zugeschlagen; 
+	# Daten kleiner kleinstem Modus werden diesem zugeschlagen;
 	KleinsterModus <- min(Means)
 	SmallModInd <- which.min(Means)
 	LowerInd <- which(Kernels<KleinsterModus);
@@ -66,7 +66,7 @@ if(CorrectBorders == TRUE & (sum(IsLogDistribution)==0)){ # Randkorrektuuren anb
 		PClassGivenData[LowerInd,i] <- 0;
 	}#end for(i in c(1:AnzMixtures))
 	PClassGivenData[LowerInd,SmallModInd] <- 1;
-	# Daten groesser groesstem Modus werden diesem zugeschlagen; 
+	# Daten groesser groesstem Modus werden diesem zugeschlagen;
 	GroessterModus <- max(Means)
 	BigModInd <- which.max(Means)
 	HigherInd <- which(Kernels>GroessterModus);
@@ -115,7 +115,7 @@ axis(2,ylim=ylim,col="black",las=1) #y-Achse
 #box() #Kasten um Graphen
 title(ylab='Posteriori',xlab=xlab)
 ##
-res <- list(Posteriors = Posteriors, NormalizationFactor=NormalizationFactor)
+res <- list(Posteriors = Posteriors, NormalizationFactor=NormalizationFactor, PClassGivenData = PClassGivenData)
 return (res) 
  
 

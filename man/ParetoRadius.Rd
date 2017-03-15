@@ -22,7 +22,7 @@ ParetoRadius(Data,maximumNrSamples,plotDistancePercentiles)
   ParetoRadius() is a kernel density estimation for variable intervals.
 	It works only on Data without missing values (NA) or NaN. In other cases, please use \code{\link{ParetoDensityEstimation}} directly.
 }
-\references{Ultsch, A.: Pareto density estimation: A density estimation for knowledge discover, in  Baier, D.; Werrnecke, K. D., (Eds), Innovations in classification, data science, and information systems, Proc Gfkl 2003, pp 91-100, Springer, Berlin, 2005.}
+\references{Ultsch, A.: Pareto density estimation: A density estimation for knowledge discovery, in  Baier, D.; Werrnecke, K. D., (Eds), Innovations in classification, data science, and information systems, Proc Gfkl 2003, pp 91-100, Springer, Berlin, 2005.}
 \author{Michael Thrun}
 \seealso{\code{\link{ParetoDensityEstimation}}, \code{\link{OptimalNoBins}}}
 \keyword{kernel density estimation}

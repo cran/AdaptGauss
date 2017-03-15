@@ -1,5 +1,5 @@
-EMGauss = function(Data,Means,SDs,Weights,MaxNumberofIterations=10, fast=F){
-#em=EMGauss(Data,Means,SDs,Weights)
+EMGauss = function(Data, K=NULL, Means=NULL,SDs=NULL,Weights=NULL,MaxNumberofIterations=10, fast=F){
+#em=EMGauss(Data,K,Means,SDs,Weights)
 # EM- Algorithm to calculate optimal Gaussian Mixture Model for given data in one Dimension
 # In particular, no adding or removing of Gaussian kernels
 # NOTE: this is probably not numerical stable, log(gauss) is not used.
@@ -8,6 +8,7 @@ EMGauss = function(Data,Means,SDs,Weights,MaxNumberofIterations=10, fast=F){
 # 
 # INPUT
 # Data(1:AnzCases)          the data points as a vector
+# K                         estimated number of Gaussian kernels
 # Means(1:L)                estimated Gaussian Kernels = means(clustercenters),
 #                           L ==  Number of Clustercenters; default=meanrobust(Data)
 # SDs(1:L)                estimated Gaussian Kernels = standard deviations; default=stdrobust(Data)
@@ -21,6 +22,7 @@ EMGauss = function(Data,Means,SDs,Weights,MaxNumberofIterations=10, fast=F){
 #
 # Author Hansen-Goos 2014
 # 1.Editor: MT 08/2015 bugfixes, new EM
+# 2.Editor: FL 10/2016 Parameter k hinzugefuegt
   
 #MT: Funktionen nach vorne verschoben
 # meanrobust
@@ -101,39 +103,61 @@ EMGauss = function(Data,Means,SDs,Weights,MaxNumberofIterations=10, fast=F){
 } # end function normpdf
 #################################################
 
-#MT: Fehlerabfang
-if(missing(Means))
-  Means=meanrobust(Data)
-if(missing(SDs))
-  SDs=stdrobust(Data)
-if(missing(Weights))
-  Weights=1
+#MT/FL: Fehlerabfang
+if(!is.null(K)){
+  if(!is.null(Means)){
+    if(K != length(Means)) stop("K should be equal to length(Means)")
+  }else{
+    if(K == 1) Means = meanrobust(Data)
+    else Means = sample(Data, K)
+  }
+  if(!is.null(SDs)){
+    if(K != length(SDs)) stop("k should be equal to length(SDs)")
+  }else{
+    if(K == 1) SDs = stdrobust(Data)
+    else SDs = runif(K,0,sd(Data))
+  }
+  if(is.null(Weights)) Weights = rep(1/K, K)
+}else{
+  if(!is.null(Means)) K = length(Means)
+  else if(!is.null(SDs)) K = length(SDs)
+  else if(!is.null(Weights)) K = length(Weights)
+  else K = 1
+  
+  if(is.null(Means)) Means=meanrobust(Data)
+  if(is.null(SDs)) SDs=stdrobust(Data)
+  if(is.null(Weights)) Weights=rep(1/K,K)
+}
+
+
+
 
 
 # how many Clustercenters
 L <- length(Means) 
 Ls <- length(SDs) 
 La <- length(Weights)
+
 if (!((L == Ls ) && (L== La))){
   warning('EMgauss: Number of means not equal to number of sdevs or Weights')
 }
 if(fast){
 
-if (!(abs(sum(Weights)-1) <0.001)){
+  if (!(abs(sum(Weights)-1) <0.001)){
   sumWeight <- sum(Weights)
   for (i in 1:length(Weights)){
     Weights[i] <- Weights[i]/sumWeight
   }
   
-}
-
-AnzCases <- length(Data)
-EMmean <- Means 
-EMsdev <- SDs 
-EMweights <- Weights
-
-
-for (t in 1:MaxNumberofIterations){ # update EM Parameters
+  }
+  
+  AnzCases <- length(Data)
+  EMmean <- Means 
+  EMsdev <- SDs 
+  EMweights <- Weights
+  
+  
+  for (t in 1:MaxNumberofIterations){ # update EM Parameters
     #1.) compute actual alpha weighted probability for each point
     Na <- matrix(0,AnzCases,L)
     for (i in 1:L) {# compute actual Distributions
@@ -204,18 +228,20 @@ for (t in 1:MaxNumberofIterations){ # update EM Parameters
         EMsdev[j] <- 0
       }
     } 
-}# for t=1:MaxNumberofIterations # update EM Parameters
-
-#output <- list(mean=EMmean,sdev=EMsdev,weight=EMweights)
-output <- list(Means=EMmean,SDs=EMsdev,Weights=EMweights)
+  }# for t=1:MaxNumberofIterations # update EM Parameters
+  
+  #output <- list(mean=EMmean,sdev=EMsdev,weight=EMweights)
+  output <- list(Means=EMmean,SDs=EMsdev,Weights=EMweights)
 
 }else{ #fast=f
 #requireRpackage('mclust')
 #iterations???
-
-em=densityMclust(Data,G=L,modelName='V',parameters=list(pro=Weights,mean=Means,variance=SDs,control=list(itmax=c(MaxNumberofIterations,MaxNumberofIterations))))
+requireNamespace('mclust')
+em=mclust::densityMclust(Data,G=L, modelName='V', parameters=list(pro=Weights,mean=Means,variance=sqrt(SDs),control=list(itmax=c(MaxNumberofIterations,MaxNumberofIterations))))
 res=em$parameters
-output <- list(Means=unname(res$mean),SDs=unname(res$variance$sigmasq),Weights=unname(res$pro))
+
+# sigmasq entspricht hier sigma^2 = sd^2 => fuer SD nochmal Wurzel ziehen
+output <- list(Means=unname(res$mean),SDs=sqrt(unname(res$variance$sigmasq)),Weights=unname(res$pro))
 #output <- list(mean=unname(res$mean),sdev=unname(res$variance$sigmasq),weight=unname(res$pro))
 return(output)
 } # end if fast

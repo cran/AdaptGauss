@@ -20,7 +20,8 @@ KStestMixtures(Data,Means,SDs,Weights,IsLogDistribution,PlotIt,UpperLimit,Silent
   \item{Silent}{Optional, default=TRUE, If FALSE, shows progress of computation by points (On windows systems a progress bar)}
 	}
 \details{
-...
+The null hypothesis is that the estimated data distribution does not differ significantly from the GMM.
+If there is a significant difference, then the Pvalue is small and the null hypothesis is rejected.
 }
 \value{
 List with

@@ -1,5 +1,12 @@
 AdaptGauss = function(Data,Means=NaN,SDs=NaN,Weights=NaN,ParetoRadius=NaN,LB=NaN,HB=NaN,ListOfAdaptGauss,fast=T){
-#    Out=AdaptGauss2(Data,Means,SDs,Weights,ParetoRadius,LB,HB);
+# V=AdaptGauss(Data,Means,SDs,Weights,ParetoRadius,LB,HB);
+# Means <- V$Means
+# SDs <- V$SDs
+# Weights <- V$Weights
+# ParetoRadius <- V$ParetoRadius
+# RMS <- V$RMS 
+# BayesBoundaries <- V$BB
+#  
 #    adapt interactively a Gaussians Mixture Model GMM to the empirical PDF of the data such that N(M,S)*W is a  model for Data
 #   
 #    INPUT
@@ -15,18 +22,18 @@ AdaptGauss = function(Data,Means=NaN,SDs=NaN,Weights=NaN,ParetoRadius=NaN,LB=NaN
 #    ListOfAdaptGauss               if given in return Format of AdaptGauss, the modell can be edited
 #
 #    OUTPUT
-#    Out$Means(1:L)                 The adapted means of the distributions
-#    Out$SDs(1:L)                   The adapted sdev  of the distributions              
-#    Out$Weights(1:L)               The adapted weights of the distributions
-#    Out$ParetoRadius               Pareto Radius used for empirical PDE 
-#    Out$RMS                        Root Mean Square Distance between empirical PDE and pdf(GMM)
+#    V$Means(1:L)                 The adapted means of the distributions
+#    V$SDs(1:L)                   The adapted sdev  of the distributions              
+#    V$Weights(1:L)               The adapted weights of the distributions
+#    V$ParetoRadius               Pareto Radius used for empirical PDE 
+#    V$RMS                        Root Mean Square Distance between empirical PDE and pdf(GMM)
 #                                   RMS == sqrt(sum(empirical PDE - pdf(GMM))^2)
 #   Out$BayesBoundaries             Bayes Boundaries between gaussians
 # author: Onno-Hansen Goos
 # 1.Editor: MT 08/2015
  Data; #Bricht bei nicht existierendem Bezeichner ab
   ## Starte Shiny
-  #library(shiny)
+#  library(shiny)
 
 if(!missing(ListOfAdaptGauss)){
   if(is.list(ListOfAdaptGauss)){
@@ -52,94 +59,9 @@ if(!missing(ListOfAdaptGauss)){
      }
   }  
   
-  # rsampleAdaptGauss
-  ############################################################
-  `rsampleAdaptGauss` <- function(k,n,uniq=TRUE,exact=TRUE){
-    
-    index = ceiling(runif(k)*n) # Calculate k of n values.
-    if(uniq==TRUE){# if unique, avoide duplicates.
-      if(k>n&exact){ # Don't run in infinite loop.
-        print("The first parameter has to be <= the second.")
-        print("You choose uniq = TRUE. This would cause an infinite loop.")
-        print("Abort function.")
-      }
-      else{
-        index = unique(index)
-        while(exact&(length(index)<k)){
-          index = c(index,ceiling(runif(k-length(index))*n))
-          index = unique(index)
-        }
-        return(index)
-      }
-    }
-    else{
-      return(index)
-    }
-  }
-  ############################################################
+ 
   
-  # getOptGauss
-  #########################################################################
-  `getOptGauss` <- function(Data, Kernels, ParetoDensity,fast){ 
-    # Teste RMS fuer einen Gauss
-    Mean1 <- mean(Data)
-    Deviation1 <- sd(Data)
-    Weight1 <- 1
-    Var=EMGauss(Data,fast=fast)
-    Mean1 <- Var$Means
-    Deviation1 <- Var$SDs
-    Weight1 <- Var$Weights
-    Fi <- dnorm(Kernels,Mean1,Deviation1)*Weight1
-    RMS1 <- sqrt(sum((Fi-ParetoDensity)^2))
-    
-    # Teste RMS fuer 3 Gauss
-    Means2 <- c(0,0,0)
-    Deviations2 <- c(0,0,0)
-    Weights2 <- c(0,0,0)
-    Valskmeans <- kmeans(Data,3,iter.max=100)
-    KValues <- Valskmeans$cluster
-    #print(KValues2)
-    for (i in 1:3){
-      Means2[i] <- mean(Data[KValues==i])
-      Deviations2[i] <- sd(Data[KValues==i])
-      Weights2[i] <- sum(KValues==i)
-      if (is.na(Deviations2[i])) {Deviations2[i] <- 0}
-    }
-    Weights2 <- Weights2/length(KValues)
-    Var=EMGauss(Data,Means2,Deviations2,Weights2,10,fast=fast)
-    Means2 <- Var$Means
-    Deviations2 <- Var$SDs
-    Weights2 <- Var$Weights
-    Fi <- 0
-    for (i in 1:3){
-      Fi <- Fi+dnorm(Kernels,Means2[i],Deviations2[i])*Weights2[i]
-    }
-    RMS2 <- sqrt(sum((Fi-ParetoDensity)^2))
-    
-    # ueberpruefe ob RMS1( 1 Gauss) oder RMS2 (3 Gauss ) kleiner ist. Speichere zugehoerige means, deviations und weights
-    SSE1=RMS1^2*log(3)
-    SSE2=RMS2^2*log(3*3)
-    if (SSE1<SSE2){
-      means <- Mean1
-      deviations <- Deviation1
-      weights <- Weight1
-    } else {
-      means <- Means2
-      deviations <- Deviations2
-      weights <- Weights2
-    }
-    # Ordne gaussians nach mean
-    order <- order(means)
-    means <- means[order]
-    deviations <- deviations[order]
-    weights <- weights[order]
-    out=list(means=means,deviations=deviations,weights=weights)
-    
-    
-    return(out)
-  }
-  #########################################################################
-  
+ 
 
 
   outputApp=runApp(list(
@@ -183,6 +105,7 @@ if(!missing(ListOfAdaptGauss)){
                     h6("General"),
                     actionButton("PlotFig", "Plot Figure", icon = icon("area-chart")),
                     actionButton("RestoreBestRMS", "Restore Best RMS", icon = icon("backward")),           
+                    actionButton("ChiSquareAnalysis", "Chi Square Analysis"),
                     h6("AdaptGauss:"),
                     actionButton("CloseButton", "Close", icon = icon("close"))
                    )
@@ -199,11 +122,18 @@ if(!missing(ListOfAdaptGauss)){
                     uiOutput("minSdev"),
                     uiOutput("minWeight")
       ),
-                   column(8,
+                   column(6,
                      uiOutput("sliderM"),
                      uiOutput("sliderS"),
                      uiOutput("sliderW")
                    ),
+                  
+                   column(2,
+                      uiOutput("numericM"),
+                      uiOutput("numericS"),
+                      uiOutput("numericW")
+                      ), 
+      
                    column(2,
                       wellPanel(h5(textOutput('ScreenMessage'))),
                       uiOutput("maxMean"),
@@ -213,14 +143,14 @@ if(!missing(ListOfAdaptGauss)){
       )
     )),
     server = function(input, output, session){
-      ## server.R --> Ab hier keine Oberfl?che mehr, ist aber mit ui.R (Oberfl?che) verkn?pft
+      ## server.R --> Ab hier keine Oberflaeche mehr, ist aber mit ui.R (Oberflaeche) verkn?pft
       
       
       # Default values for Data if no input
 
       data <- Data
       
-      #?bertrage Input Werte (k?nnen sonst von Shiny nicht korrekt verwendet werden)
+      #?bertrage Input Werte (koennen sonst von Shiny nicht korrekt verwendet werden)
       
       GM <- Means
       GS <- SDs
@@ -238,6 +168,7 @@ if(!missing(ListOfAdaptGauss)){
       GMBestRMS <- NULL
       GWSave <- NULL
       GWBestRMS <- NULL
+      MonitorStopReactions <- FALSE
 
       
       # Index f?r Befehle (siehe interactive value befehl)
@@ -276,10 +207,10 @@ if(!missing(ListOfAdaptGauss)){
         }
       } 
       data <- dataNew
-      # Reduce Data to 10000 Elements, if larger than 10000 (?bersch?ssige Datenpunkte werden randomisiert entfernt)
-      if (length(data)>10000){
-        data <- data[rsampleAdaptGauss(10000,length(data))];
-        print("Reducing to 10000 datapoints");
+      # Reduce Data to 25000 Elements, if larger than 25000 (ueberschuessige Datenpunkte werden randomisiert entfernt)
+      if (length(data)>25000){
+        data <- data[rsampleAdaptGauss(25000,length(data))];
+        print("Reducing to 25000 datapoints");
       } 
       # Bestimme Pareto Density inkl. Kernels
       if (is.nan(ParetoRadius)){ 
@@ -358,8 +289,21 @@ if(!missing(ListOfAdaptGauss)){
       })  
       output$sliderW <- renderUI({
         befehl$drawSliderMSW
-        sliderInput("W", h5("Weight"), width='150%',min=WLimit[1], max=WLimit[2], value = GW[currGauss], step=(WLimit[2]-WLimit[1])*0.001)
+        sliderInput("W", h5("Weight"), width='150%',min=WLimit[1], max=WLimit[2], value = GW[currGauss], step=0.0001)
       })       
+      
+      output$numericM <- renderUI({
+        #numericInput("numericM", h5("Mean"), min=MLimit[1], max=MLimit[2], value = GM[currGauss], step=(MLimit[2]-MLimit[1])*0.001)
+        numericInput("numericM", h5("Mean"), min=MLimit[1], max=MLimit[2], value = GM[currGauss], step=1)
+      })
+      output$numericS <- renderUI({
+        numericInput("numericS", h5("SD"), min=MLimit[1], max=MLimit[2], value = GM[currGauss], step=(SLimit[2]-SLimit[1])*0.001)
+      })
+      output$numericW <- renderUI({
+        numericInput("numericW", h5("Weight"), min=MLimit[1], max=MLimit[2], value = GM[currGauss], step=0.0001)
+      })
+      
+      
       output$minMean <- renderUI({
         befehl$updateMinMax
         #print("Erstelle Min/Max f?r M/S/W")
@@ -408,6 +352,31 @@ if(!missing(ListOfAdaptGauss)){
       ## Interaktive Variablen: befehl$... fungiert als Funktionsaufruf.
       befehl <- reactiveValues(plot = 0, updateSlider=0, updateSliderCurrGauss=0, drawSliderMSW=0, updateRMS=0, updateMinMax=0) #Signal zum update des Plots / der Slider
       
+      ### Observes fuer die numeric input boxes
+      observe({
+        updateNumericInput(session, "numericM", value=input$M)
+        updateNumericInput(session, "numericS", value=input$S)
+        updateNumericInput(session, "numericW", value=input$W)
+      })
+      observe({
+        input$numericM
+        input$numericS
+        input$numericW
+        # der numeric input darf nicht zu scnell andere werte updaten sonst gibt es eine endlosschleife mit dem slider
+        if(MonitorStopReactions==F){
+          MonitorStopReactions<<-T
+          updateSliderInput(session, "M", value=input$numericM)
+          updateSliderInput(session, "S", value=input$numericS)
+          updateSliderInput(session, "W", value=input$numericW)
+        }
+      })
+      
+      # alle 500ms darf der numeric input wieder einen neuen wert setzen
+      validationTimer <- reactiveTimer(500)
+      observe({
+        validationTimer()
+        MonitorStopReactions <<- F
+      })
       
       ## Observe Part: warte auf Input     
       observe({ # Grenzen f?r die Werte von means, sdevs und weights
@@ -528,10 +497,10 @@ if(!missing(ListOfAdaptGauss)){
         numGaussSave <<- numGauss 
         if (input$expMax>0){
           print("Expectation Maximation")
-          Var <- EMGauss(data,GM,GS,GW,numIterations,fast=fast)
+          Var <- EMGauss(data,length(GM),GM,GS,GW,numIterations,fast=fast)
           GM <<- Var$Means
           GS <<- Var$SDs
-          GW <<- Var$Weights
+          GW <<- round(Var$Weights,4)
         }
 
         # L?sche Gauss mit Weight==0
@@ -599,6 +568,10 @@ if(!missing(ListOfAdaptGauss)){
         befehl$updateSliderCurrGauss <- iBefehl
         befehl$updateSlider <- iBefehl
         befehl$plot <- iBefehl
+      })
+      
+      observeEvent(input$ChiSquareAnalysis,{
+        Chi2testMixtures(Data, GM, GS, GW, PlotIt = T)
       })
       
       # Plotten der Grafik (nur bei Befehl (befehl$plot))

@@ -24,7 +24,7 @@ Duda, R.O., P.E. Hart, and D.G. Stork, Pattern classification. 2nd. Edition. New
 
 Bishop, Christopher M. Pattern recognition and machine learning. springer, 2006, p 435 ff
 
-Ultsch, A.: Pareto density estimation: A density estimation for knowledge discover, in  Baier, D.; Werrnecke, K. D., (Eds), Innovations in classification, data science, and information systems, Proc Gfkl 2003, pp 91-100, Springer, Berlin, 2005. 
+Ultsch, A.: Pareto density estimation: A density estimation for knowledge discovery, in  Baier, D.; Werrnecke, K. D., (Eds), Innovations in classification, data science, and information systems, Proc Gfkl 2003, pp 91-100, Springer, Berlin, 2005. 
 
 Thrun M.C., Ultsch, A.: Models of Income Distributions for Knowledge Discovery, European Conference on Data Analysis, DOI 10.13140/RG.2.1.4463.0244, Colchester 2015.
 }

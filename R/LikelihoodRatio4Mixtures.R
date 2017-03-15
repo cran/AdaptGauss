@@ -24,7 +24,7 @@ LikelihoodRatio4Mixtures <- function(Data,NullMixture,OneMixture,PlotIt=FALSE, L
 # ALU 2015
 # Uebertrag von Matlab nach R: CL 02/2016
 #1. Editor: MT 03/2016
-	  #library(grid)# fuer multiplot
+#	  library(grid)# fuer multiplot
 ValidDataInd = which((Data >= LowerLimit) & (Data <= UpperLimit))
 
 ## NullMixture
@@ -128,7 +128,7 @@ if(PlotIt ==TRUE){
 	#
 	#author: http://www.cookbook-r.com/Graphs/Multiple_graphs_on_one_page_%28ggplot2%29/
 	multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
-
+requireNamespace('grid')
 	  
 	  # Make a list from the ... arguments and plotlist
 	  plots <- c(list(...), plotlist)
@@ -149,15 +149,15 @@ if(PlotIt ==TRUE){
 	    
 	  } else {
 	    # Set up the page
-	    grid.newpage()
-	    pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
+	    grid::grid.newpage()
+	    grid::pushViewport(grid::viewport(layout = grid::grid.layout(nrow(layout), ncol(layout))))
 	    
 	    # Make each plot, in the correct location
 	    for (i in 1:numPlots) {
 	      # Get the i,j matrix positions of the regions that contain this subplot
 	      matchidx <- as.data.frame(which(layout == i, arr.ind = TRUE))
 	      
-	      print(plots[[i]], vp = viewport(layout.pos.row = matchidx$row,
+	      print(plots[[i]], vp = grid::viewport(layout.pos.row = matchidx$row,
 	                                      layout.pos.col = matchidx$col))
 	    }
 	  }

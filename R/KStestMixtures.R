@@ -21,6 +21,8 @@ KStestMixtures=function(Data,Means,SDs,Weights,IsLogDistribution=Means*0,PlotIt=
 
 # MT 2015, reimplemented from ALUs matlab version
 
+par.defaults <- par(no.readonly=TRUE)
+
 ################################
 #Hilfsfunktionen
 ################################
@@ -144,8 +146,7 @@ if(PlotIt ==1){
   title(paste0('max(Diff) at: ',KernelMaxDiff),xlab='Data',ylab='pdf(GMM), red= pdf(Data)')
   abline(v=KernelMaxDiff,col='green')
 #     subplot(2,2,3);
-  		pareto_radius2<-ParetoRadius(AllDiff) 
-			pdeVal2        <- ParetoDensityEstimation(AllDiff,pareto_radius2)
+			pdeVal2        <- ParetoDensityEstimation(AllDiff)
 			xlim=c(min(MaxDiff*0.90,pdeVal2$kernels,na.rm = T),max(pdeVal2$kernels,na.rm = T))
 			ylim=c(0,1.05*max(pdeVal2$paretoDensity,na.rm = T))
 			plot(pdeVal2$kernels,pdeVal2$paretoDensity,type='l',xaxs='i',
@@ -156,9 +157,9 @@ if(PlotIt ==1){
       xlim=c(min(MaxDiff*0.90,AllDiffKernels,na.rm = T),max(AllDiffKernels,na.rm = T))
       ylim=c(min(MaxDiffCDFwert*0.90,AllDiffCDF,na.rm = T),max(AllDiffCDF,na.rm = T))
       tryCatch({
-        plot(AllDiffKernels,AllDiffCDF,type='p',ylab='cdf(KS-MaxDiff)',xlab='Diff, mag = max(Diff)',main=   paste0('Pvalue: ',PvalueKS*100,' [#]'),ylim=ylim,xlim=xlim,col='blue')
+        plot(AllDiffKernels,AllDiffCDF,type='p',ylab='cdf(KS-MaxDiff)',xlab='Diff, mag = max(Diff)',main=   paste0('Pvalue: ',100-PvalueKS*100,' [#]'),ylim=ylim,xlim=xlim,col='blue')
       },er=function(ex){
-        plot(AllDiffKernels,AllDiffCDF,type='p',ylab='cdf(KS-MaxDiff)',xlab='Diff, mag = max(Diff)',main=   paste0('Pvalue: ',PvalueKS*100,' [#]'),col='blue')
+        plot(AllDiffKernels,AllDiffCDF,type='p',ylab='cdf(KS-MaxDiff)',xlab='Diff, mag = max(Diff)',main=   paste0('Pvalue: ',100-PvalueKS*100,' [#]'),col='blue')
       })
       abline(v=MaxDiff,col='magenta')
       #abline(a=c(MaxDiffCDFwert,MaxDiffCDFwert),b=c(0,MaxDiff))
@@ -169,8 +170,10 @@ if(PlotIt ==1){
     return(list(PvalueKS=PvalueKS,DataKernels=DataKernels,DataCDF=DataCDF,CDFGaussMixture=CDFGaussMixture,Controls))
   })
 } #if PlotIt ==1
-    
-return(list(PvalueKS=PvalueKS,DataKernels=DataKernels,DataCDF=DataCDF,CDFGaussMixture=CDFGaussMixture,Controls))
+    #kleiner Pvalue: schlecht
+		#grosser pvalue: gut
+		par(par.defaults)
+return(list(PvalueKS=1-PvalueKS,DataKernels=DataKernels,DataCDF=DataCDF,CDFGaussMixture=CDFGaussMixture,Controls))
 }
 
 

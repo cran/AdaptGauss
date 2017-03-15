@@ -6,11 +6,12 @@
 Expectation-Maximization algorithm to calculate optimal Gaussian Mixture Model for given data in one Dimension.
 }
 \usage{
-EMGauss(Data, Means, SDs,Weights, MaxNumberofIterations,fast)
+EMGauss(Data, K, Means, SDs,Weights, MaxNumberofIterations,fast)
 }
 
 \arguments{
   \item{Data}{vector of data points}
+  \item{K}{estimated amount of Gaussian Kernels}
   \item{Means}{vector(1:L), Means of Gaussians,  L ==  Number of Gaussians}
   \item{SDs}{estimated Gaussian Kernels = standard deviations}
   \item{Weights}{optional, relative number of points in Gaussians (prior probabilities): 
@@ -32,7 +33,7 @@ List with
 \references{
 Bishop, Christopher M. Pattern recognition and machine learning. springer, 2006, p 435 ff
 }
-\author{Onno Hansen-Goos, Michael Thrun}
+\author{Onno Hansen-Goos, Michael Thrun, Florian Lerch}
 \seealso{\code{\link{AdaptGauss}}}
 
 \keyword{Expectation-Maximization}

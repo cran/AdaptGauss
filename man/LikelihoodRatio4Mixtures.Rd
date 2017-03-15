@@ -26,6 +26,19 @@ List with
   \item{NullLogLikelihood}{log likelihood of GMM Null}
   \item{OneLogLikelihood}{log likelihood of GMM One}
 }
+\examples{
 
+  
+  data2=c(rnorm(1000),rnorm(2000)+2,rnorm(1000)*2-1)
+  \dontrun{Vals=AdaptGauss(data2,c(-1,0,2),c(2,1,1),c(0.25,0.25,0.5),0.3,-6,6)
+  NullMixture=cbind(Vals$Means,Vals$SDs,Vals$Weights)
+  }
+  \dontrun{Vals2=AdaptGauss(data2,c(-1,0,2,3),c(2,1,1,1),c(0.25,0.25,0.25,0.25),0.3,-6,6)
+  OneMixture=cbind(Vals2$Means,Vals2$SDs,Vals2$Weights)
+  }
+  \dontrun{
+  res=LikelihoodRatio4Mixtures(Data,NullMixture,OneMixture,T)
+  }
+ }
 \author{Alfred Ultsch, Michael Thrun, Catharina Lippmann}
 

@@ -6,9 +6,6 @@
 	Chi2testMixtures is goodness of fit test which establishes whether an observed distribution (data) differs from a Gauss Mixture Model (GMM).
   Returns a P value of a special case of a chi-square test and visualizes data versus a given GMM.
 }
-\usage{
-Chi2testMixtures(Data,Means,SDs,Weights,IsLogDistribution,PlotIt,UpperLimit,VarName)
-}
 
 \arguments{
   \item{Data}{vector of data points (1:n)}
@@ -19,13 +16,14 @@ Chi2testMixtures(Data,Means,SDs,Weights,IsLogDistribution,PlotIt,UpperLimit,VarN
   \item{PlotIt}{Optional, Default: FALSE, do a Plot of the compared cdfs and the KS-test distribution (Diff)}
   \item{UpperLimit}{Optional. test only for Data <= UpperLimit, Default = max(Data) i.e all Data.}
 	\item{VarName}{If PlotIt=TRUE, the name of the inspected variable, default 'Data'}
+	\item{MonteCarloSampling}{If MonteCarloSampling = T montecarlo-sampling will be done for generation of a test statistic.}
 }
 \details{
-	The null hypothesis is that the estimated data distribution differs significantly from the GMM.
+	The null hypothesis is that the estimated data distribution does not differ significantly from the GMM.
   Let O_i be the observed features and E_i be the expected number E,
   than the test statistic is defined with the minimum chi-square estimate T=sum((O_i-E_i)^2/E_i)*1/m, where m the number of data points.
 	The expected number Ei may be derived for each bin.  If there is a significant difference between the O_i
-	and the E_i, the Pvalue is large and the null hypothesis cannot be rejected.
+	and the E_i, the Pvalue is small and the null hypothesis can be rejected.
 	
 	Further details, see [Thrun & Ultsch, 2015].
 }
