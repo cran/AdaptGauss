@@ -2,7 +2,7 @@ exportPattern("^[[:upper:]][[:alpha:]]+")
 # export only functions that begin with an uppercase letter 
 import(shiny)
 #import(grid)
-importFrom('caTools', trapz)
+importFrom('pracma', trapz)
 importFrom(ggplot2,'ggplot','geom_line','ggtitle','ylab','xlab','aes','stat_function','aes_string')
 #importFrom('mclust', densityMclust)
 importFrom("grDevices", "rainbow")
