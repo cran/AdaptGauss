@@ -1,3 +1,22 @@
+#' Classify Data according to decision Boundaries
+#' 
+#' The Decision Boundaries calculated through Bayes Theorem.
+#'
+#' @param Data vector of Data
+#' @param DecisionBoundaries decision boundaries, BayesDecisionBoundaries
+#' @param ClassLabels Optional numbered class labels that are assigned to the classes. default (1:L), L number of different components of gaussian mixture model
+#'
+#' @return
+#'  Cls(1:n,1:d) classiffication of Data, such that 1= first component of gaussian mixture model, 2= second component of gaussian mixture model and so on. For Every datapoint a number is returned.
+#' 
+#' @author Michael Thrun
+#'
+#' @references Duda, R. O., Hart, P. E., & Stork, D. G. (2001). Pattern classification. 2nd. Edition. New York, p. 512ff
+#' 
+#' \strong{See Also}
+#' 
+#' BayesDecisionBoundaries, Bayes4Mixtures 
+#' 
 ClassifyByDecisionBoundaries=function(Data,DecisionBoundaries,ClassLabels){
 # Cls = ClassifyByDecisionBoundaries(Data,DecisionBoundaries)
 # Classify Data according to decision Boundaries
@@ -27,12 +46,24 @@ ClassLabels=seq(from=1,by=1,to=(AnzBounds+1))
 
 Cls=rep(1,length(Data)) # default alles in Klasse 1
 
-for(b in 1:AnzBounds){
-  
-  ind=Data>DecisionBoundaries[b]
+nonan=which(is.finite(Data))
 
+if(length(nonan)!=length(Data)){
+  warning('Datavector contains NaN. These values cannot be classified.')
+  names(Cls)=1:length(Data)
+  ClsTmp=Cls[nonan]
+  DataTmp=Data[nonan]
+  for(b in 1:AnzBounds){
+    ind=DataTmp>DecisionBoundaries[b]
+    ClsTmp[ind] = rep(ClassLabels[b+1],sum(ind))
+  } # for c
+  Cls[as.numeric(names(ClsTmp))]=ClsTmp
+  Cls[setdiff(1:length(Cls),as.numeric(names(ClsTmp)))]=NaN
+}else{
+  for(b in 1:AnzBounds){
+    ind=Data>DecisionBoundaries[b]
     Cls[ind] = rep(ClassLabels[b+1],sum(ind))
-} # for c
-
+  } # for c
+}
 return(Cls)
 }

@@ -1,5 +1,5 @@
 exportPattern("^[[:upper:]][[:alpha:]]+")
-# export only functions that begin with an uppercase letter 
+# export only functions that begin with an uppercase letter
 import(shiny)
 #import(grid)
 importFrom('pracma', trapz)

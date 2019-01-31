@@ -1,3 +1,28 @@
+#' Intersect of two Gaussians
+#' 
+#' Finds the intersect of two gaussians or log gaussians
+#'
+#' @param Mean1 mean of 1.gaussian
+#' @param SD1 standard deviations of 1.gaussian
+#' @param Weight1 weight of 1. guassian
+#' @param Mean2 mean of 2.gaussian
+#' @param SD2 standard deviations of 2.gaussian
+#' @param Weight2 weight of 2. guassian 
+#' @param IsLogDistribution Optional, ==1 if distribution(i) is a LogNormal, default vector of zeros of length 2
+#' @param MinData Optional, Beginning of range, where the intersect is searched for, default min(Mean1,Mean2) 
+#' @param MaxData Optional, End of range, where the intersect is searched for, default max(Mean1,Mean2)
+#'
+#' @return
+#' 
+#' CutX x value, where gaussian 1=gaussian2
+#' 
+#' CutY y value, where gaussian 1=gaussian2
+#'
+#' @author Michael Thrun, Rabea Griese
+#'
+#' \strong{See Also}
+#' 
+#' BayesDecisionBoundaries
 Intersect2Mixtures <- function(Mean1,SD1,Weight1,Mean2,SD2,Weight2,IsLogDistribution = c(FALSE,FALSE),MinData,MaxData){
   #  [CutX,CutY] = Intersect2Mixtures(Mean1,SD1,Weight1,Mean2,SD2,Weight2,IsLogDistribution);
   # INPUT

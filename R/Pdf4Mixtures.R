@@ -1,3 +1,34 @@
+#' Calculates pdf for GMM
+#' 
+#' Calculate Gaussianthe probability density function for a Mixture Model
+#' 
+#'
+#' @param Data vector (1:N) of data points
+#' @param Means vector[1:L] of Means of Gaussians (of GMM),L == Number of Gaussians 
+#' @param SDs vector of standard deviations, estimated Gaussian Kernels, has to be the same length as Means
+#' @param Weights vector of relative number of points in Gaussians (prior probabilities), has to be the same length as Means
+#' @param IsLogDistribution Optional, ==1 if distribution(i) is a LogNormal, default vector of zeros of length 1:L
+#' @param PlotIt Optional: =TRUE plot of pdf
+#'
+#' @return List With 
+#' \describe{
+#'   \item{PDF4modes:}{matrix, where the columns are the gaussians}
+#'   \item{PDF:}{matrix, where the columns are the gaussians weighted by Weights}
+#'   \item{PDFmixture:}{linear superpositions of PDF - prior probabilities of Gaussians}
+#'}
+#' 
+#' @author Michael Thrun
+#' 
+#' \strong{See Also}
+#' 
+#' PlotMixtures
+#' 
+#' @examples
+#' 
+#' data=c(rnorm(1000),rnorm(2000)+2,rnorm(1000)*2-1)
+#' 
+#' Pdf4Mixtures(data,c(-1,0,2),c(2,1,1),c(0.25,0.25,0.5), PlotIt=TRUE)
+#' 
 Pdf4Mixtures=function(Data,Means,SDs,Weights,IsLogDistribution,PlotIt=F){
 # pdfV=Pdf4Mixtures(Data,Means,SDs,Weights,IsLogDistribution,PlotIt=T)
 # generate the pdf for the Mixture

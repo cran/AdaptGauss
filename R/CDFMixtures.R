@@ -1,3 +1,26 @@
+#' cumulative distribution of mixture model
+#' 
+#' returns the cdf (cumulative distribution function) of a mixture model of gaussian or log gaussians
+#'
+#' @param Kernels at these locations N(Means,Sdevs)*Weights is used for cdf calcuation, NOTE: Kernels are usually (but not necessarily) sorted and unique
+#' @param Means vector(1:L), Means of Gaussians, L == Number of Gaussians
+#' @param SDs estimated Gaussian Kernels = standard deviations
+#' @param Weights optional, relative number of points in Gaussians (prior probabilities): sum(Weights) ==1, default weight is 1/L
+#' @param IsLogDistribution Optional, if IsLogDistribution(i)==1, then mixture is lognormal default == 0*(1:L)
+#'
+#' @return List With 
+#' \describe{
+#'   \item{CDFGaussMixture:}{(1:N,1), cdf of Sum of SingleGaussians at Kernels}
+#'   \item{CDFSingleGaussian:}{(1:N,1:L) ,cdf of mixtures at Kernels}
+#'}
+#' 
+#' @author Rabea Griese
+#'
+#' \strong{See Also}
+#' 
+#' Chi2testMixtures
+#' 
+#' 
 CDFMixtures <- function(Kernels,Means,SDs,Weights = (Means*0)+1,IsLogDistribution = Means*0){
 # [CDFGaussMixture,CDFSingleGaussian] = CDFMixtures(Kernels,Means,SDs,Weights,IsLogDistribution);
 # gibt die cdf (cumulierte Dichte) einer aus Gauss bzw. LogGauss zusammengesetzten GMM Verteilung zuruck. 

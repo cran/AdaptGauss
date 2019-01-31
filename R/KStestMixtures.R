@@ -1,3 +1,36 @@
+#' Kolmogorov-Smirnov test
+#' 
+#' Returns a P value and visualizes for Kolmogorov-Smirnov test of Data versus a given Gauss Mixture Model
+#'
+#'
+#' @param Data vector of data points
+#' @param Means vector of Means of Gaussians 
+#' @param SDs vector of standard deviations, estimated Gaussian Kernels
+#' @param Weights vector of relative number of points in Gaussians (prior probabilities)
+#' @param IsLogDistribution Optional, if IsLogDistribution(i)==1, then mixture is lognormal, default vector of zeros of length 1:L
+#' @param PlotIt Optional, Default: FALSE, do a Plot of the compared cdfs and the KS-test distribution (Diff)
+#' @param UpperLimit Optional. test only for Data <= UpperLimit, Default = max(Data) i.e all Data.
+#' @param Silent Optional, default=TRUE, If FALSE, shows progress of computation by points (On windows systems a progress bar)
+#' 
+#' @details 
+#'  
+#' The null hypothesis is that the estimated data distribution does not differ significantly from the GMM. If there is a significant difference, then the Pvalue is small and the null hypothesis is rejected.
+#'  
+#' @return List With 
+#' \describe{
+#'   \item{Pvalue:}{Pvalue of a suiting Kolmogorov-Smirnov test, Pvalue ==0 if Pvalue <0.001}
+#'   \item{DataKernels:}{such that plot(DataKernels,DataCDF) gives the cdf(Data)}
+#'   \item{DataCDF:}{such that plot(DataKernels,DataCDF) gives the cdf(Data)}
+#'   \item{CDFGaussMixture:}{No. of data that should be in bin according to GMM}
+#' 
+#' }
+#' 
+#' @author micheal Thrun, Alfred Ultsch
+#'
+#' @references 
+#' 
+#' Smirnov, N., Table for Estimating the Goodness of Fit of Empirical Distributions. 1948, (2), 279-281.
+#' 
 KStestMixtures=function(Data,Means,SDs,Weights,IsLogDistribution=Means*0,PlotIt=FALSE,UpperLimit=max(Data,na.rm=TRUE),Silent=T){
 # res= KStestMixtures(Data,Means,SDs,Weights,IsLogDistribution,PlotIt,UpperLimit)
 # Kolmogorov-Smirnov Test Data vs a given Gauss Mixture Model

@@ -1,3 +1,46 @@
+#' Pareto Density Estimation
+#' 
+#' This function estimates the Pareto Density for the distribution of one variable.
+#'
+#' @param Data numeric vector of data.
+#' @param paretoRadius Optional, numeric value, see ParetoRadius
+#' @param kernels Optional, numeric vector. data values where pareto density is measured at. If 0 (by default) kernels will be computed.
+#' @param MinAnzKernels Optional, minimal number of kernels, default MinAnzKernels==100
+#' 
+#' @details 
+#' Pareto Density Estimation (PDE) is a method for the estimation of probability density functions using hyperspheres. The Pareto-radius of the hyperspheres is derived from the optimization of information for minimal set size. It is shown, that Pareto Density is the best estimate for clusters of Gaussian structure. The method is shown to be robust when cluster overlap and when the variances differ across clusters.
+#' 
+#' 
+#' @return List With 
+#' \describe{
+#'   \item{kernels:}{numeric vector. data values at with Pareto Density is measured.}
+#'   \item{paretoDensity:}{numeric vector containing the determined density by ParetoRadius.}
+#'   \item{paretoRadius:}{numeric value.}
+#'}
+#' 
+#' 
+#' @note 
+#' This is the best density estimation to judge Gaussian Mixtures of the data see [Ultsch 2003]
+#' 
+#' @author Michael Thrun
+#' 
+#' @references 
+#' Ultsch, A.: Pareto density estimation: A density estimation for knowledge discovery, in Baier, D.; Werrnecke, K. D., (Eds), Innovations in classification, data science, and information systems, Proc Gfkl 2003, pp 91-100, Springer, Berlin, 2005.
+#'
+#'
+#' \strong{See Also}
+#' 
+#' ParetoRadius
+#' 
+#' @examples
+#' 
+#'    data = c(rnorm(1000),rnorm(2000)+2,rnorm(1000)*2-1)
+#'    pdeVal        <- ParetoDensityEstimation(data)
+#'    plot(pdeVal$kernels,pdeVal$paretoDensity,type='l',xaxs='i',
+#'    yaxs='i',xlab='Data',ylab='PDE')
+#'    
+#' 
+#' 
 ParetoDensityEstimation= function(Data,paretoRadius=NULL,kernels=NULL,MinAnzKernels=100){
 #  V = ParetoDensityEstimation(Data,ParetoRadius,Kernels)
 #  V= ParetoDensityEstimation(Data,ParetoRadius)

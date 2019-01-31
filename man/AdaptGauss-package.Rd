@@ -3,9 +3,9 @@
 \alias{MultiModal-package}
 \alias{MultiModal}
 \docType{package}
-\title{
-AdaptGauss-package
-}
+
+\title{AdaptGauss-package}
+
 \description{
 Multimodal distributions can be modelled as a mixture of components. The model is derived using the Pareto Density Estimation (PDE) for an estimation of the pdf [Ultsch 2005]. PDE has been designed in particular to identify groups/classes in a dataset. The expectation maximization algorithm estimates a Gaussian mixture model of density states [Bishop 2006] and the limits between the different states are defined by Bayes decision boundaries [Duda 2001]. The model can be verified with Chi-squared test, Kolmogorov-Smirnov test and QQ plot.
 
@@ -13,10 +13,10 @@ The correct number of modes may be found with AIC or BIC.
 }
 
 \author{
- Michael Thrun, Onno Hansen-Goos, Rabea Griese, Catharina Lippmann,Jorn Lotsch, Alfred Ultsch
- 
- Maintainer: Michael Thrun <mthrun@mathematik.uni-marburg.de>
+Michael Thrun, Onno Hansen-Goos, Rabea Griese, Catharina Lippmann, Florian Lerch, Jorn Lotsch, Alfred Ultsch
+Maintainer: Florian Lerch <lerch@mathematik.uni-marburg.de>
 }
+
 \references{
 Ultsch, A., Thrun, M.C., Hansen-Goos, O., Loetsch, J.: Identification of Molecular Fingerprints in Human Heat Pain Thresholds by Use of an Interactive Mixture Model R Toolbox(AdaptGauss), International Journal of Molecular Sciences, doi:10.3390/ijms161025897, 2015.
 

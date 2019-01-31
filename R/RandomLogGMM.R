@@ -1,3 +1,22 @@
+#' Random Number Generator for Log or Gaussian Mixture Model
+#' 
+#' Function finds the intersections of Gaussians or LogNormals
+#'
+#' @param Means vector[1:L] of Means of Gaussians (of GMM)
+#' @param SDs vector of standard deviations, estimated Gaussian Kernels, has to be the same length as Means
+#' @param Weights vector of relative number of points in Gaussians (prior probabilities), has to be the same length as Means
+#' @param IsLogDistribution Optional, ==1 if distribution(i) is a LogNormal, default vector of Zeros of Length L
+#' @param TotalNoPoints Optional, number of point for log or GMM generated
+#'
+#' @return
+#' Returns vector of [1:TotalNoPoints] of genrated points for log oder gaussian mixture model
+#' 
+#' @author  Alfred Ultsch,Michael Thrun, Rabea Griese
+#' 
+#' \strong{See Also}
+#' 
+#' QQplotGMM,Chi2testMixtures
+
 RandomLogGMM=function(Means,SDs,Weights,IsLogDistribution,TotalNoPoints=1000){
   # GMM = RandomLogGMM(Means,SDs,Weights,IsLogDistribution,TotalNoPoints)
   # genereierung von ZufalsDaten, die einer Mischung von Vereilungen aus
