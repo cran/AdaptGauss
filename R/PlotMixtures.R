@@ -1,46 +1,3 @@
-#' Shows GMM
-#' 
-#' Plots Gaussian Mixture Model without Bayes decision boundaries, such that:  \cr
-#'  \cr
-#' Black is the PDE of Data  \cr
-#'  \cr
-#' Red is color of the GMM  \cr
-#'  \cr
-#' Blue is the color of components of the mixture  \cr
-#'
-#' @param Data vector (1:N) of data points
-#' @param Means vector[1:L] of Means of Gaussians (of GMM),L == Number of Gaussians
-#' @param SDs vector of standard deviations, estimated Gaussian Kernels, has to be the same length as Means
-#' @param Weights vector of relative number of points in Gaussians (prior probabilities), has to be the same length as Means 
-#' @param IsLogDistribution Optional, ==1 if distribution(i) is a LogNormal, default vector of zeros of length 1:L
-#' @param SingleColor Optional,Color for line plot of all the single gaussians, default magenta
-#' @param MixtureColor Optional,Color of line lot for the mixture default red
-#' @param DataColor Optional,Color of line plot for the data, default black
-#' @param SingleGausses Optional, If TRUE, single gaussians are shown, default FALSE
-#' @param axes Optional,Default:TRUE with axis, see argument axis of plot
-#' @param xlab Optional, see plot 
-#' @param ylab Optional, see plot
-#' @param xlim Optional, see plot
-#' @param ylim Optional, see plot
-#' @param ParetoRad Optional, Precalculated Pareto Radius
-#' @param ... other plot arguments like xlim = c(1,10)
-#' 
-#' 
-#' @author Michael Thrun
-#' 
-#' \strong{See Also}
-#'
-#' PlotMixturesAndBoundaries
-#' 
-#' 
-#' @examples
-#' data=c(rnorm(1000),rnorm(2000)+2,rnorm(1000)*2-1)
-#' 
-#' PlotMixtures(data,c(-1,0,2),c(2,1,1),c(0.25,0.25,0.5),SingleColor='blue',SingleGausses=TRUE)
-#' 
-#' 
-#'
-
 PlotMixtures <- function(Data, Means, SDs, Weights = rep(1/length(Means),length(Means)), IsLogDistribution = rep(FALSE,length(Means)),SingleColor = 'blue', MixtureColor = 'red',DataColor='black',SingleGausses=FALSE,axes=TRUE,xlab, ylab,xlim, ylim, ParetoRad=NULL, ...){
 # PlotMixtures(Data,Means,SDs,Weights,IsLogDistribution,SingleColor,MixtureColor);
 # PlotMixtures(Data,Means,SDs,Weights,IsLogDistribution);
@@ -90,7 +47,7 @@ AnzGaussians <- length(Means)
 if(SingleColor  != 0){
 # 	for(g in c(1:AnzGaussians)){
 # 		if(IsLogDistribution[g] == TRUE){ # LogNormal
-# 			SingleGaussian[,g] <- symlognpdf(X,Means[g],SDs[g])*Weights[g] # LogNormal
+# 			SingleGaussian[,g] <- Symlognpdf(X,Means[g],SDs[g])*Weights[g] # LogNormal
 # 		}else{ # Gaussian
 # 			SingleGaussian[,g] = dnorm(X,Means[g],SDs[g])*Weights[g]
 # 		}# if IsLogDistribution(i) ==T

@@ -1,36 +1,4 @@
-#' Posterioris of Bayes Theorem for a two group GMM
-#'
-#' Calculates the posterioris of Bayes theorem, splits the GMM in two groups beforehand.
-#'
-#' @param Data vector (1:N) of data points
-#' @param Means vector[1:L] of Means of Gaussians (of GMM),L == Number of Gaussians 
-#' @param SDs vector of standard deviations, estimated Gaussian Kernels, has to be the same length as Means
-#' @param Weights vector of relative number of points in Gaussians (prior probabilities), has to be the same length as Means
-#' @param IsLogDistribution Optional, ==1 if distribution(i) is a LogNormal, default vector of zeros of length L
-#' @param Ind1 indices from (1:C) such that [M(Ind1),S(Ind1) ,W(Ind1) ]is one mixture, [M(Ind2),S(Ind2) ,W(Ind2) ] the second mixture default Ind1= 1:C/2, Ind2= C/2+1:C
-#' @param Ind2 indices from (1:C) such that [M(Ind1),S(Ind1) ,W(Ind1) ]is one mixture, [M(Ind2),S(Ind2) ,W(Ind2) ] the second mixture default Ind1= 1:C/2, Ind2= C/2+1:C
-#' @param PlotIt Optional, Default: FALSE; TRUE do a Plot
-#' @param CorrectBorders Optional, ==TRUE data at right borders of GMM distribution will be assigned to last gaussian, left border vice versa. (default ==FALSE) normal Bayes Theorem
-#'
-#' @details 
-#' See conference presentation for further explanation.
-#'
-#' @return List With 
-#' \describe{
-#'   \item{Posteriors:}{(1:N,1:L) of Posteriors corresponding to Data}
-#'   \item{NormalizationFactor:}{(1:N) denominator of Bayes theorem corresponding to Data}
-#'   
-#'}
-#'
-#' @author Alfred Ultsch, Michael Thrun
-#' 
-#' @references 
-#' Thrun M.C.,Ultsch, A.: Models of Income Distributions for Knowledge Discovery, European Conference on Data Analysis, DOI 10.13140/RG.2.1.4463.0244, Colchester 2015.
-#' 
-#' \strong{See Also}
-#' 
-#' BayesDecisionBoundaries,AdaptGauss
-#' 
+
 BayesFor2GMM <- function(Data, Means, SDs, Weights, IsLogDistribution = Means*0, Ind1 = c(1:floor(length(Means)/2)),
  Ind2 = c((floor(length(Means)/2)+1):length(Means)), PlotIt = 0, CorrectBorders = 0){
 # die Berechnung der Posteriors wobei das gegeben GMM als zwei Gruppen Ind1 und Ind2 aufgefasst werden.

@@ -1,26 +1,3 @@
-#' LogLikelihood for Gaussian Mixture Models
-#' 
-#' Computes the LogLikelihood for Gaussian Mixture Models.
-#'
-#' @param Data Data for empirical PDF. Has to be an Array of values. NaNs and NULLs will be deleted
-#' @param Means Optional: Means of gaussians of GMM.
-#' @param SDs Optional: StandardDevations of gaussians of GMM. (Has to be the same length as Means)
-#' @param Weights Optional: Weights of gaussians of GMM. (Has to be the same length as Means)
-#' @param IsLogDistribution Optional, ==1 if distribution(i) is a LogNormal, default vector of zeros of length 1:L
-#'
-#' @return List With 
-#' \describe{
-#'   \item{LogLikelihood:}{LogLikelihood = = sum(log(PDFmixture)}
-#'   \item{LogPDF:}{=log(PDFmixture)}
-#'   \item{PDFmixture:}{die Probability density function for each point}
-#'  } 
-#' 
-#' @author Alfred Ultsch, Catharina Lippmann
-#' 
-#' @references 
-#'
-#' Pattern Recogintion and Machine Learning, C.M. Bishop, 2006, isbn: ISBN-13: 978-0387-31073-2, p. 433 (9.14)
-#' 
 LogLikelihood4Mixtures <- function(Data, Means, SDs, Weights, IsLogDistribution=Means*0){
 # LogLikelihood <- LogLikelihood4Mixtures(Data,Means,SDs,Weights,IsLogDistribution)
 # berechnung der Loglikelihood fuer ein Mixture model: LogLikelihood = sum(log(PDFmixture))

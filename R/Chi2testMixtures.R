@@ -1,41 +1,3 @@
-#' Pearson's chi-squared goodness of fit test
-#' 
-#' Chi2testMixtures is goodness of fit test which establishes whether an observed distribution (data) differs from a Gauss Mixture Model (GMM). Returns a P value of a special case of a chi-square test and visualizes data versus a given GMM.
-#'
-#' @param Data vector of data points (1:n)
-#' @param Means vector of Means of Gaussians (1:c)
-#' @param SDs vector of standard deviations, estimated Gaussian Kernels (1:c)
-#' @param Weights vector of relative number of points in Gaussians (prior probabilities) (1:c)
-#' @param IsLogDistribution Optional, if IsLogDistribution(i)==1, then mixture is lognormal, default vector of zeros of length 1:L 
-#' @param PlotIt Optional, Default: FALSE, do a Plot of the compared cdfs and the KS-test distribution (Diff)
-#' @param UpperLimit Optional. test only for Data <= UpperLimit, Default = max(Data) i.e all Data.
-#' @param VarName If PlotIt=TRUE, the name of the inspected variable, default 'Data'
-#' @param MonteCarloSampling Should the Chi2 Distribution be sampled (instead of looked up in a table)
-#' 
-#' @details 
-#' The null hypothesis is that the estimated data distribution does not differ significantly from the GMM. Let O_i be the observed features and E_i be the expected number E, than the test statistic is defined with the minimum chi-square estimate T=sum((O_i-E_i)^2/E_i)*1/m, where m the number of data points. The expected number Ei may be derived for each bin. If there is a significant difference between the O_i and the E_i, the Pvalue is small and the null hypothesis can be rejected.
-#'
-#' Further details, see [Thrun & Ultsch, 2015].
-#'
-#' @return  List With 
-#' \describe{
-#'   \item{Pvalue:}{Pvalue of a suiting chi-square , Pvalue ==0 if Pvalue <0.001}
-#'   \item{BinCenters:}{bin centers}
-#'   \item{ObsNrInBin:}{No. of data in bin}
-#'   \item{ExpectedNrInBin:}{No. of data that should be in bin according to GMM}
-#'   \item{Chi2Value:}{the TestStatistic T i.e.: sum((ObsNrInBin(Ind)-ExpectedNrInBin(Ind))^2/ExpectedNrInBin(Ind)) with Ind = find(ExpectedNrInBin>=10) The value of Chi2Value is compared to a chi-squared distribution.}
-#'}
-#'
-#' @note 
-#' The statistic assumption is that the the test statistic follows a chi square distribution. The number of degrees of freedom is equal to the number of datapoints n-1-3*c
-#' 
-#' @author Rabea Griese, Michael Thrun
-#' 
-#' @references 
-#' Hartung, J., Elpelt, B., and Kloesener, K.H.: Statistik, 8. Aufl. Verlag Oldenburg (1991).
-#' 
-#' Thrun, M. C., Ultsch, A.: Models of Income Distributions for Knowledge Discovery, European Conference on Data Analysis, DOI 10.13140/RG.2.1.4463.0244, pp. 28-29, Colchester 2015.
-#'
 Chi2testMixtures <- function(Data,Means,SDs,Weights,IsLogDistribution = Means*0,PlotIt = 0,UpperLimit=max(Data,na.rm=TRUE),VarName='Data', MonteCarloSampling=T){
 # V=Chi2testMixtures(Data,Means,SDs,Weights,IsLogDistribution,PlotIt,UpperLimit)
 # V$Pvalue V$BinCenters V$ObsNrInBin V$ExpectedNrInBin
@@ -68,6 +30,7 @@ Chi2testMixtures <- function(Data,Means,SDs,Weights,IsLogDistribution = Means*0,
 # Autor: RG 06/15
 #1.Editor: MT 08/2015 plotten, Fehlerabfang bei kleinen Datensaetzen
 #2.Editor: FL 12/16 moeglichkeit, chi2 dist. direkt in tabelle nachzuschlagen eingefuegt.
+  #3.Editor: MT 03/19 deutliche effizienzsteigerung eingepflegt.
   
 par.defaults <- par(no.readonly=TRUE)
 if(length(IsLogDistribution) == 1 && IsLogDistribution == 0) 
@@ -166,11 +129,32 @@ if(AnzBins<100)  AnzRepetitions = 2000
 if(AnzBins<10)   AnzRepetitions = 5000
 
 if(MonteCarloSampling){
+  #MT 2019/03: das waere die schnelle version, grad nur keine zeit das anzupassen
+  # nB1 <- AnzBins
+  # delt <- 3/nB1
+  # fuzz <- 1e-7 * c(-delt, rep.int(delt, nB1))
+  # breaks <- seq(0, 3, by = delt) + fuzz
+  
   RandGMMDataDiff = matrix(0,AnzBins,AnzRepetitions)
+  #zukeunftig with parSapply
+  Ri=sapply(1:AnzRepetitions, function(i,...) return(RandomLogGMM(...)),Means,SDs,Weights,IsLogDistribution,AnzData)
+  #zukeunftig with parApply
+  RandNrInBini=apply(Ri,MARGIN = 2, function(R,BinLimits) hist(Re(abs(R)),c(0,BinLimits,max(abs(R))),plot=F)$counts,BinLimits)
+  
+  #MT 2019/03: das waere die schnelle version, grad nur keine zeit das anzupassen
+  #noch in apply zu integrieren
+  # nB1 <- 99
+  # delt <- 3/nB1
+  # fuzz <- 1e-7 * c(-delt, rep.int(delt, nB1))
+  # breaks <- seq(0, 3, by = delt) + fuzz
+  #RandNrInBin=.Call(graphics:::C_BinCount, x, breaks, TRUE, TRUE)
+  
   for(i in 1:AnzRepetitions){
-    R = RandomLogGMM(Means,SDs,Weights,IsLogDistribution,AnzData)
+    #R = Ri[,i]#RandomLogGMM(Means,SDs,Weights,IsLogDistribution,AnzData)
     #BinLimits = c(0,BinLimits,max(abs(R)))
-    RandNrInBin = hist(Re(abs(R)),c(0,BinLimits,max(abs(R))),plot=F)$counts  # R's schnelle Funktion benutzen
+    #RandNrInBin = hist(Re(abs(R)),c(0,BinLimits,max(abs(R))),plot=F)$counts  # R's schnelle Funktion benutzen
+    RandNrInBin=as.vector(RandNrInBini[,i])
+    
     #BinLimits = BinLimits[2:(length(BinLimits)-1)]
     RandNrInBin[2] = RandNrInBin[1]+RandNrInBin[2]
     RandNrInBin[length(RandNrInBin)-1] = RandNrInBin[length(RandNrInBin)-1]+RandNrInBin[length(RandNrInBin)]

@@ -1,35 +1,3 @@
-#' Information Criteria For GMM
-#' 
-#' Calculates the AIC and BIC criteria
-#'
-#' @param Data vector (1:N) of data points
-#' @param Means vector[1:L] of Means of Gaussians (of GMM),L == Number of Gaussians
-#' @param SDs vector of standard deviations, estimated Gaussian Kernels, has to be the same length as Means
-#' @param Weights vector of relative number of points in Gaussians (prior probabilities), has to be the same length as Means
-#' @param IsLogDistribution Optional, ==1 if distribution(i) is a LogNormal, default vector of zeros of length L, LogNormal Modes are at this point only experimental
-#'
-#' @details 
-#' AIC = 2*k -2*LogLikelihood, k = nr. of model parameter = 3*Nr. of Gaussians One Gaussian: K=2 (Weight is then not an parameter!) SMALL SAMPLE CORRECTION: for n= nr of Data and n < 40 * k, AIC is adjusted to AIC=AIC+ (2*k*(k+1))/(n-k-1)
-#' 
-#' BIC = k* log(n) - 2*LogLikelihood
-#' 
-#' Only for a Gaussian Mixture Model (GMM) verified, for the Log Gaussian, Gaussian, Log Gaussian (LGL) Model only experimental
-#' 
-#' @return List With 
-#' \describe{
-#'   \item{K:}{Number of gaussian mixtures}
-#'   \item{AIC:}{Akaike Informations criterium}
-#'   \item{BIC:}{Bayes Information criterium}
-#'   \item{LogLikelihood:}{LogLikelihood of GMM, see LogLikelihood4Mixtures}
-#'   \item{PDFmixture:}{probability density function of GMM, see Pdf4Mixtures}
-#'   \item{LogPDFdata:}{log(PDFmixture)}
-#'}
-#' @author Michael Thrun
-#' 
-#' @references 
-#' Aubert, A. H., Thrun, M. C., Breuer, L., & Ultsch, A.: Knowledge discovery from data structure: hydrology versus biology controlled in-stream nitrate concentration, Scientific reports, Vol. (in revision), pp., 2016
-#'
-#' Aho, K., Derryberry, D., & Peterson, T.: Model selection for ecologists: the worldviews of AIC and BIC. Ecology, 95(3), pp. 631-636, 2014
 InformationCriteria4GMM=function(Data,Means,SDs,Weights,IsLogDistribution=Means*0){
 # Vres = InformationCriteria4GMM(Data,M,S,W,IsLogDistribution)
 # berechnung von AIC (Akaike Information Criterium) und BIC (Bayes Information Criterium)

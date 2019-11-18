@@ -1,22 +1,3 @@
-#' Classify Data according to decision Boundaries
-#' 
-#' The Decision Boundaries calculated through Bayes Theorem.
-#'
-#' @param Data vector of Data
-#' @param DecisionBoundaries decision boundaries, BayesDecisionBoundaries
-#' @param ClassLabels Optional numbered class labels that are assigned to the classes. default (1:L), L number of different components of gaussian mixture model
-#'
-#' @return
-#'  Cls(1:n,1:d) classiffication of Data, such that 1= first component of gaussian mixture model, 2= second component of gaussian mixture model and so on. For Every datapoint a number is returned.
-#' 
-#' @author Michael Thrun
-#'
-#' @references Duda, R. O., Hart, P. E., & Stork, D. G. (2001). Pattern classification. 2nd. Edition. New York, p. 512ff
-#' 
-#' \strong{See Also}
-#' 
-#' BayesDecisionBoundaries, Bayes4Mixtures 
-#' 
 ClassifyByDecisionBoundaries=function(Data,DecisionBoundaries,ClassLabels){
 # Cls = ClassifyByDecisionBoundaries(Data,DecisionBoundaries)
 # Classify Data according to decision Boundaries
