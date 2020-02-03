@@ -73,49 +73,49 @@ if(PlotIt ==TRUE){
    y=NULL
     x=NULL
     kernels=NULL
-   paretoRadius<-ParetoRadius(Data[ValidDataInd])
-   pdeVal        <- ParetoDensityEstimation(Data[ValidDataInd],paretoRadius,NULL)
+   paretoRadius<-DataVisualizations::ParetoRadius(Data[ValidDataInd])
+   pdeVal        <- DataVisualizations::ParetoDensityEstimation(Data[ValidDataInd],paretoRadius,NULL)
    paretoDensity <- pdeVal$paretoDensity*1
    dfframe = as.data.frame(cbind(kernels = pdeVal$kernels, density = paretoDensity))
    #colnames(dfframe)=c('kernels','density')
 
     #  kernels=pdeVal$kernels
-   pdePlot <-ggplot()+ geom_line(data = dfframe, aes(x = kernels, y = density), colour = "black")
+   pdePlot <-ggplot2::ggplot()+ ggplot2::geom_line(data = dfframe, ggplot2::aes(x = kernels, y = density), colour = "black")
    
    nullmodell=as.data.frame(cbind(kernels = Data[ValidDataInd],density = NullPDF[ValidDataInd]))
 	 onemodell=as.data.frame(cbind(kernels = Data[ValidDataInd],density = OnePDF[ValidDataInd]))
-	pdePlot <- pdePlot + geom_line(data = nullmodell, aes(x=kernels, y=density), colour="blue")
-	pdePlot <- pdePlot + geom_line(data = onemodell, aes(x=kernels, y=density), colour="red")
-	pdePlot <- pdePlot + ggtitle("PDE and Mixture Models")
-	pdePlot <- pdePlot + ylab("blue = Nullmodel, red = Onemodel")
-	pdePlot <- pdePlot + xlab("Data")
+	pdePlot <- pdePlot + ggplot2::geom_line(data = nullmodell, ggplot2::aes(x=kernels, y=density), colour="blue")
+	pdePlot <- pdePlot + ggplot2::geom_line(data = onemodell, ggplot2::aes(x=kernels, y=density), colour="red")
+	pdePlot <- pdePlot + ggplot2::ggtitle("PDE and Mixture Models")
+	pdePlot <- pdePlot + ggplot2::ylab("blue = Nullmodel, red = Onemodel")
+	pdePlot <- pdePlot + ggplot2::xlab("Data")
 	
 	nulllogmodell=as.data.frame(cbind(kernels = Data[ValidDataInd],density = NullLogPDF[ValidDataInd]))
 	onelogmodell=as.data.frame(cbind(kernels = Data[ValidDataInd],density = OneLogPDF[ValidDataInd]))
 	# Erstelle plot von LogPDF beider Modelle
-	LogPDFplot = ggplot() + geom_line(data = nulllogmodell, aes(x=kernels, y=density), colour="blue")
-	LogPDFplot =	LogPDFplot + geom_line(data = onelogmodell, aes(x=kernels, y=density), colour="red")
-	LogPDFplot <- LogPDFplot + ggtitle(paste0("LogPDF, LogLikeli Null= ",NullLogLikelihood, ", One = ", OneLogLikelihood))
-	LogPDFplot <- LogPDFplot + ylab("blue = Nullmodel, red = Onemodel")
-	LogPDFplot <- LogPDFplot + xlab("Data")
+	LogPDFplot = ggplot2::ggplot() + ggplot2::geom_line(data = nulllogmodell, ggplot2::aes(x=kernels, y=density), colour="blue")
+	LogPDFplot =	LogPDFplot + ggplot2::geom_line(data = onelogmodell, ggplot2::aes(x=kernels, y=density), colour="red")
+	LogPDFplot <- LogPDFplot + ggplot2::ggtitle(paste0("LogPDF, LogLikeli Null= ",NullLogLikelihood, ", One = ", OneLogLikelihood))
+	LogPDFplot <- LogPDFplot + ggplot2::ylab("blue = Nullmodel, red = Onemodel")
+	LogPDFplot <- LogPDFplot + ggplot2::xlab("Data")
 	nuller=as.data.frame(cbind(x = c(D,D), y = c(0,pchisq(D, DegreesOfFreedom))))
 	einser=as.data.frame(cbind(x = c(0,D), y = c(pchisq(D, DegreesOfFreedom),pchisq(D, DegreesOfFreedom))))
 	# Erstelle plot der CDF der Chi-quadrat-Verteilung und markiere den Wert der Teststatistik
 	x11 = data.frame(c(0, 10))
 	#y0=c(0,pchisq(D, DegreesOfFreedom))
 	#y1=c(pchisq(D, DegreesOfFreedom),pchisq(D, DegreesOfFreedom))
-	ChisqCDF <- ggplot(x, aes(x11)) + stat_function(fun = pchisq, args=list(df=DegreesOfFreedom))
-	ChisqCDF <- ChisqCDF + geom_line(data= nuller, aes(x,y) , colour = 'blue')
-	ChisqCDF <- ChisqCDF + geom_line(data= einser, aes(x,y, color ='Myline') , colour = 'blue')
-	ChisqCDF <- ChisqCDF + ggtitle(paste0('Chi^2 CDF with DF = ', DegreesOfFreedom))
-	ChisqCDF <- ChisqCDF + ylab("blue = value of test statistic")
-	ChisqCDF <- ChisqCDF + xlab(paste0("Pvalue = ", Pvalue))
+	ChisqCDF <- ggplot2::ggplot(x, ggplot2::aes(x11)) + ggplot2::stat_function(fun = pchisq, args=list(df=DegreesOfFreedom))
+	ChisqCDF <- ChisqCDF + ggplot2::geom_line(data= nuller, ggplot2::aes(x,y) , colour = 'blue')
+	ChisqCDF <- ChisqCDF + ggplot2::geom_line(data= einser, ggplot2::aes(x,y, color ='Myline') , colour = 'blue')
+	ChisqCDF <- ChisqCDF + ggplot2::ggtitle(paste0('Chi^2 CDF with DF = ', DegreesOfFreedom))
+	ChisqCDF <- ChisqCDF + ggplot2::ylab("blue = value of test statistic")
+	ChisqCDF <- ChisqCDF + ggplot2::xlab(paste0("Pvalue = ", Pvalue))
 	nullminuseins=as.data.frame(cbind(kernels = Data[ValidDataInd],density = OneLogPDF[ValidDataInd]-NullLogPDF[ValidDataInd]))
 	# Erstelle plot von LogPDF des OneModels minus LogPDF des NullModels
-	LogPDFOneMinusNullplot <- ggplot() + geom_line(data = nullminuseins, aes(x=kernels, y=density), colour="black")
-	LogPDFOneMinusNullplot <- LogPDFOneMinusNullplot + ggtitle('LogPDF OneModel - NullModel')
-	LogPDFOneMinusNullplot <- LogPDFOneMinusNullplot + ylab("LogPDF OneModel - LogPDF NullModel")
-	LogPDFOneMinusNullplot <- LogPDFOneMinusNullplot + xlab("Data")
+	LogPDFOneMinusNullplot <- ggplot2::ggplot() + ggplot2::geom_line(data = nullminuseins, ggplot2::aes(x=kernels, y=density), colour="black")
+	LogPDFOneMinusNullplot <- LogPDFOneMinusNullplot + ggplot2::ggtitle('LogPDF OneModel - NullModel')
+	LogPDFOneMinusNullplot <- LogPDFOneMinusNullplot + ggplot2::ylab("LogPDF OneModel - LogPDF NullModel")
+	LogPDFOneMinusNullplot <- LogPDFOneMinusNullplot + ggplot2::xlab("Data")
 	# Multiple plot function
 	#
 	# ggplot objects can be passed in ..., or to plotlist (as a list of ggplot objects)

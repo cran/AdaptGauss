@@ -110,19 +110,19 @@ if(CorrectBorders == 1 & (sum(IsLogDistribution) == 0)){ # randkorrekturen anbri
 
 if ( PlotIt == 1){
 	print( 'BayesFor2GMM(): Plot is in development')
-  gPlot <- ggplot()
+  gPlot <- ggplot2::ggplot()
   
   
   
   for (i in 1:AnzMixtures){
     df = data.frame(x = Kernels, y=PDataGivenClass[,i]*Weights[i]/Pmax)
-    gPlot = gPlot + geom_line(data = df, aes_string(x="x",y="y"), color="blue")
+    gPlot = gPlot + ggplot2::geom_line(data = df, ggplot2::aes_string(x="x",y="y"), color="blue")
   }
   
   df = data.frame(x = Kernels, y=Posteriors[,1])
-  gPlot = gPlot + geom_line(data = df, aes_string(x="x",y="y"), color="green")
+  gPlot = gPlot + ggplot2::geom_line(data = df, ggplot2::aes_string(x="x",y="y"), color="green")
   df = data.frame(x = Kernels, y=Posteriors[,2])
-  gPlot = gPlot + geom_line(data = df, aes_string(x="x",y="y"), color="red")
+  gPlot = gPlot + ggplot2::geom_line(data = df, ggplot2::aes_string(x="x",y="y"), color="red")
    # hold on; plot(Kernels,PDataGivenClass(:,i)*Weights(i)/Pmax,'b-');hold off;
   # end;% i = 1:AnzMixtures
   # hold on; plot(Kernels,Posteriors(:,1),'g-');hold off;
