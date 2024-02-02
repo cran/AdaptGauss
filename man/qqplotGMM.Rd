@@ -6,8 +6,9 @@
   Quantile Quantile plot of data against gaussian distribution mixture model with optional best-fit-line
 }
 \usage{
-QQplotGMM(Data,Means,SDs,Weights,IsLogDistribution,Line,
-PlotSymbol,xug,xog,LineWidth,PointWidth, ylab,main, ...)
+QQplotGMM(Data,Means,SDs,Weights,IsLogDistribution,Method,Line,
+PlotSymbol,col,xug,xog,LineWidth,PointWidth,PositiveData,Type,NoQuantiles,
+ylabel,main,lwd,pch,xlabel,...)
 }
 
 \arguments{
@@ -16,14 +17,22 @@ PlotSymbol,xug,xog,LineWidth,PointWidth, ylab,main, ...)
   \item{SDs}{vector of standard deviations, estimated Gaussian Kernels, has to be the same length as Means}
   \item{Weights}{vector of relative number of points in Gaussians (prior probabilities), has to be the same length as Means}
   \item{IsLogDistribution}{Optional, ==1 if distribution(i) is a LogNormal, default Zeros of Length L}
+  \item{Method}{Optional, ==1 default. ==2 for robust calculation}
   \item{Line}{ Optional, Default: TRUE=Regression Line is drawn}
-  \item{xug}{ Optional, lower limit of the interval [xug, xog], in which a line will be interpolated }
-  \item{xog}{ Optional, upper limit of the interval [xug, xog], in which a line will be interpolated }
+  \item{col}{Character: color of regression line (only for Method = 2)}
+  \item{xug}{ Optional, lower limit of the interval [xug, xog], in which a line will be interpolated}
+  \item{xog}{ Optional, upper limit of the interval [xug, xog], in which a line will be interpolated}
   \item{PlotSymbol}{ Optional, plot symbol. Default is 20. }
   \item{LineWidth}{ Optional, width of regression line, if Line==TRUE }
   \item{PointWidth}{Optional, width of points}
-	\item{ylab}{Optional, see \code{\link{plot}}}
+  \item{PositiveData}{Optional, Boolean: If true only positive values of GMM sampling are used. Default FALSE}
+	\item{Type}{Optional,Integer: number of method used for computing the quantiles, see \code{\link{quantile}}}     
+  \item{NoQuantiles}{Optional, Integer: Number of quantiles to compute (only for Method = 2)}
+  \item{ylabel}{Optional, see \code{\link{plot}}}
 	\item{main}{Optional, see \code{\link{plot}}}
+	\item{lwd}{Optional, Integer: graphic parameter - line width option (only for Method = 2)}
+	\item{pch}{Integer: graphic parameter for points (only for Method = 2)}
+	\item{xlabel}{Optional, see \code{\link{plot}}}
 	\item{...}{Note: xlab cannot be changed, other parameters see \code{\link{qqplot}}}
 }
 \value{   

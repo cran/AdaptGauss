@@ -1,6 +1,5 @@
 \name{AdaptGauss-package}
 \alias{AdaptGauss-package}
-\alias{MultiModal-package}
 \alias{MultiModal}
 \docType{package}
 \title{
@@ -23,7 +22,7 @@ Maintainer: \packageMaintainer{AdaptGauss}
 }
 \examples{
 ## Statistically  significant GMM
-\donttest{
+\dontrun{
 data=c(rnorm(3000,2,1),rnorm(3000,7,3),rnorm(3000,-2,0.5))
 
 gmm=AdaptGauss::AdaptGauss(data,
@@ -42,7 +41,7 @@ AdaptGauss::QQplotGMM(data,gmm$Means,gmm$SDs,gmm$Weights)
 }
 
 ## Statistically non significant GMM
-\donttest{
+\dontrun{
 data('LKWFahrzeitSeehafen2010')
 
 gmm=AdaptGauss::AdaptGauss(LKWFahrzeitSeehafen2010,

@@ -26,5 +26,5 @@ M<0 Log normal distribution density mirrored at y axis
 not for external usage.
 }
 \seealso{
-AdaptLGL AdaptLGL 
+AdaptLGL
 }

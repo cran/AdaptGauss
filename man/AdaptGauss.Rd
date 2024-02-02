@@ -46,13 +46,11 @@ List with
 \author{Onno Hansen-Goos, Michael Thrun}
 
 \examples{
-
   data1=c(rnorm(1000))
   \dontrun{Vals1=AdaptGauss(data1)}
   
   data2=c(rnorm(1000),rnorm(2000)+2,rnorm(1000)*2-1)
   \dontrun{Vals2=AdaptGauss(data2,c(-1,0,2),c(2,1,1),c(0.25,0.25,0.5),0.3,-6,6)}
-  
   
  }
  \references{
